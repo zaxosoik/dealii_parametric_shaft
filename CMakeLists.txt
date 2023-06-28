@@ -17,7 +17,7 @@ endif()
 #ADD_LIBRARY(METIS)
 #FIND_PACKAGE(METIS REQUIRED)
 
-set(scope "step_18_cyl_force_modal_v3")
+set(scope "parametric_shaft_dynamic_v3")
 #set(scope "step_18_cylv5")
 #set(scope "step_18_cylv5")
 #set(scope "step_36_parallel_3")

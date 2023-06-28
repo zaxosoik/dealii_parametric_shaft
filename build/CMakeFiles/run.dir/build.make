@@ -67,7 +67,7 @@ include CMakeFiles/run.dir/compiler_depend.make
 include CMakeFiles/run.dir/progress.make
 
 CMakeFiles/run:
-	cd /home/zaxosoik/dealii_oikonomou/build/run/step_18_cyl_force_modal_v3 && /home/zaxosoik/dealii_oikonomou/build/run/step_18_cyl_force_modal_v3/step_18_cyl_force_modal_v3
+	cd /home/zaxosoik/dealii_oikonomou/build/run/parametric_shaft_dynamic_v3 && /home/zaxosoik/dealii_oikonomou/build/run/parametric_shaft_dynamic_v3/parametric_shaft_dynamic_v3
 
 run: CMakeFiles/run
 run: CMakeFiles/run.dir/build.make
