@@ -1,5 +1,5 @@
 CMakeFiles/parametric_shaft_dynamic_v3.dir/src/parametric_shaft_dynamic_v3.cpp.o: \
- /home/zaxosoik/dealii_oikonomou/src/parametric_shaft_dynamic_v3.cpp \
+ /home/zaxosoik/dealii_parametric_shaft/src/parametric_shaft_dynamic_v3.cpp \
  /usr/include/stdc-predef.h \
  /usr/local/include/deal.II/base/quadrature_lib.h \
  /usr/local/include/deal.II/base/config.h \
