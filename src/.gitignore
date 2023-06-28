@@ -1,0 +1,15 @@
+# gitignore folder build, build} 
+build}/
+build/CMakeFiles/
+build/CMakeFiles
+.vscode/
+*.msh
+*.gnuplot
+*.inp
+*.vtu
+*.vtk
+*.pvtu
+build/.cmake
+build/.cmake/
+build/Makefile
+build/compile_commands.json
