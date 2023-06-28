@@ -1,0 +1,4 @@
+/home/zaxosoik/dealii_oikonomou/build/CMakeFiles/step_18_cyl_force_modal_v3.dir
+/home/zaxosoik/dealii_oikonomou/build/CMakeFiles/run.dir
+/home/zaxosoik/dealii_oikonomou/build/CMakeFiles/edit_cache.dir
+/home/zaxosoik/dealii_oikonomou/build/CMakeFiles/rebuild_cache.dir
