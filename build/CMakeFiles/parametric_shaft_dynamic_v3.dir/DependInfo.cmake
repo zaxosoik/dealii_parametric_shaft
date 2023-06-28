@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/zaxosoik/dealii_oikonomou/src/parametric_shaft_dynamic_v3.cpp" "CMakeFiles/parametric_shaft_dynamic_v3.dir/src/parametric_shaft_dynamic_v3.cpp.o" "gcc" "CMakeFiles/parametric_shaft_dynamic_v3.dir/src/parametric_shaft_dynamic_v3.cpp.o.d"
+  "/home/zaxosoik/dealii_parametric_shaft/src/parametric_shaft_dynamic_v3.cpp" "CMakeFiles/parametric_shaft_dynamic_v3.dir/src/parametric_shaft_dynamic_v3.cpp.o" "gcc" "CMakeFiles/parametric_shaft_dynamic_v3.dir/src/parametric_shaft_dynamic_v3.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

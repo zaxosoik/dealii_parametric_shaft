@@ -53,10 +53,10 @@ RM = /usr/local/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/zaxosoik/dealii_oikonomou
+CMAKE_SOURCE_DIR = /home/zaxosoik/dealii_parametric_shaft
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/zaxosoik/dealii_oikonomou/build
+CMAKE_BINARY_DIR = /home/zaxosoik/dealii_parametric_shaft/build
 
 # Utility rule file for run.
 
@@ -67,7 +67,7 @@ include CMakeFiles/run.dir/compiler_depend.make
 include CMakeFiles/run.dir/progress.make
 
 CMakeFiles/run:
-	cd /home/zaxosoik/dealii_oikonomou/build/run/parametric_shaft_dynamic_v3 && /home/zaxosoik/dealii_oikonomou/build/run/parametric_shaft_dynamic_v3/parametric_shaft_dynamic_v3
+	cd /home/zaxosoik/dealii_parametric_shaft/build/run/parametric_shaft_dynamic_v3 && /home/zaxosoik/dealii_parametric_shaft/build/run/parametric_shaft_dynamic_v3/parametric_shaft_dynamic_v3
 
 run: CMakeFiles/run
 run: CMakeFiles/run.dir/build.make
@@ -82,6 +82,6 @@ CMakeFiles/run.dir/clean:
 .PHONY : CMakeFiles/run.dir/clean
 
 CMakeFiles/run.dir/depend:
-	cd /home/zaxosoik/dealii_oikonomou/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/zaxosoik/dealii_oikonomou /home/zaxosoik/dealii_oikonomou /home/zaxosoik/dealii_oikonomou/build /home/zaxosoik/dealii_oikonomou/build /home/zaxosoik/dealii_oikonomou/build/CMakeFiles/run.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/zaxosoik/dealii_parametric_shaft/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/zaxosoik/dealii_parametric_shaft /home/zaxosoik/dealii_parametric_shaft /home/zaxosoik/dealii_parametric_shaft/build /home/zaxosoik/dealii_parametric_shaft/build /home/zaxosoik/dealii_parametric_shaft/build/CMakeFiles/run.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/run.dir/depend
 
