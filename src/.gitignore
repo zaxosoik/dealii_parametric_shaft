@@ -1,5 +1,5 @@
 # gitignore folder build, build} 
-build}/
+#build/
 build/CMakeFiles/
 build/CMakeFiles
 .vscode/
