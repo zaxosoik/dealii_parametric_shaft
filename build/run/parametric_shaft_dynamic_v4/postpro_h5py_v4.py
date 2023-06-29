@@ -414,7 +414,7 @@ index_max = []
 temp_y = 0
 temp_x = x_coordinates[0]
 ##print(temp_x)
-x_ = np.linspace(x_coordinates.min(),x_coordinates.max(),100)
+x_ = np.linspace(x_coordinates.min(),x_coordinates.max(),10000)
 temp_i = 0
 
 for k in range(x_.shape[0]):

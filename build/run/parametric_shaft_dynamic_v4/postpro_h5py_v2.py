@@ -305,7 +305,7 @@ def log_tick_formatter(val, pos=None):
     return f"$10^{{{int(val)}}}$"
 
 
-grid_x, grid_y = np.mgrid[min(x_coordinates2plot):max(x_coordinates2plot):100j, min(angles2plot):max(angles2plot):100j]
+grid_x, grid_y = np.mgrid[min(x_coordinates2plot):max(x_coordinates2plot):1000j, min(angles2plot):max(angles2plot):1000j]
 
 grid_z = griddata((x_coordinates2plot, angles2plot), max_stresses, (grid_x, grid_y), method='nearest')
 grid_deform = griddata((x_coordinates2plot, angles2plot), deform2plot, (grid_x, grid_y), method='nearest')

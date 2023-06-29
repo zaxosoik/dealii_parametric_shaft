@@ -2104,7 +2104,7 @@ data_out_eigen.add_data_vector(eigenfunctions[i],
     error_per_cell = distributed_error_per_cell;
     GridRefinement::refine_and_coarsen_fixed_number(triangulation,
                                                     error_per_cell,
-                                                    0.3,
+                                                    0.1,
                                                     0.);
     triangulation.execute_coarsening_and_refinement();
  

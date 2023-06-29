@@ -83,7 +83,7 @@
     </Engine>
     <Geometry>
         <Global_20refinements>
-            <value>1</value>
+            <value>2</value>
             <default_value>2</default_value>
             <documentation>Number of global refinements</documentation>
             <pattern>3</pattern>
@@ -97,7 +97,7 @@
             <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
         </Half_20length>
         <Partitions>
-            <value>10</value>
+            <value>60</value>
             <default_value>10</default_value>
             <documentation>Number of partitions</documentation>
             <pattern>2</pattern>
@@ -185,7 +185,7 @@
             <pattern_description>[Integer range 1...232147483647 (inclusive)]</pattern_description>
         </Max_20iterations>
         <Number_20of_20refinement_20cycles>
-            <value>4</value>
+            <value>10</value>
             <default_value>5</default_value>
             <documentation>Number of refinement cycles</documentation>
             <pattern>14</pattern>
