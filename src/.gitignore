@@ -17,3 +17,6 @@ build/.cmake/
 build/Makefile
 build/compile_commands.json
 build/run/**/*.vtu
+build/run/**/*.pvd
+build/run/**/*.pvtu
+build/run/**/*.h5
