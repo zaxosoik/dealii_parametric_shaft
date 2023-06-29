@@ -16,3 +16,4 @@ build/.cmake
 build/.cmake/
 build/Makefile
 build/compile_commands.json
+build/run/*/*.vtu
