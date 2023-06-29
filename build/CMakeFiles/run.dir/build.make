@@ -67,7 +67,7 @@ include CMakeFiles/run.dir/compiler_depend.make
 include CMakeFiles/run.dir/progress.make
 
 CMakeFiles/run:
-	cd /home/zaxosoik/dealii_parametric_shaft/build/run/parametric_shaft_dynamic_v3 && /home/zaxosoik/dealii_parametric_shaft/build/run/parametric_shaft_dynamic_v3/parametric_shaft_dynamic_v3
+	cd /home/zaxosoik/dealii_parametric_shaft/build/run/parametric_shaft_dynamic_v4 && /home/zaxosoik/dealii_parametric_shaft/build/run/parametric_shaft_dynamic_v4/parametric_shaft_dynamic_v4
 
 run: CMakeFiles/run
 run: CMakeFiles/run.dir/build.make
