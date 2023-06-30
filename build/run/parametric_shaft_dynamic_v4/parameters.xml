@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <ParameterHandler>
     <Bearings>
         <Bearing_20x>
@@ -90,14 +89,14 @@
             <pattern_description>[Integer range 1...2147483647 (inclusive)]</pattern_description>
         </Global_20refinements>
         <Half_20length>
-            <value>10</value>
+            <value>15.5</value>
             <default_value>10.0</default_value>
             <documentation>Half length of the cylinder</documentation>
             <pattern>1</pattern>
             <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
         </Half_20length>
         <Partitions>
-            <value>60</value>
+            <value>10</value>
             <default_value>10</default_value>
             <documentation>Number of partitions</documentation>
             <pattern>2</pattern>
