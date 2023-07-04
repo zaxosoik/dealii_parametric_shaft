@@ -65,6 +65,7 @@
 #include <fstream>
 #include <iostream>
 #include <iomanip>
+#include <filesystem>
  
 #include <cstdlib> 
 
@@ -256,6 +257,7 @@ namespace Step_18_cyl
       double beta;
       double gamma;
       bool dynamicmode;
+      std::string outputfolder;
 
 
       static void declare_parameters(ParameterHandler &prm);
@@ -310,6 +312,10 @@ namespace Step_18_cyl
                           "yes",
                           Patterns::Selection("yes|no"),
                           "Will the dynamic mode be activated?");
+        prm.declare_entry("OutputFolder",
+                          "output",
+                          Patterns::Anything(),
+                          "Output folder");
 
 
       }
@@ -331,6 +337,7 @@ namespace Step_18_cyl
         beta = prm.get_double("NewmarkBetaMethod Beta");
         gamma = prm.get_double("NewmarkBetaMethod Gamma");
         dynamicmode = prm.get_bool("DynamicMode");
+        outputfolder = prm.get("OutputFolder");
 
         
       }
@@ -1937,19 +1944,32 @@ data_out_eigen.add_data_vector(eigenfunctions[i],
     data_out.add_data_vector(partitioning, "partitioning");
 
     data_out.build_patches();
- 
+    if (this_mpi_process==0)
+    {
+      std::filesystem::path dir = "./"+prm.outputfolder;
 
+      // Check if directory does not exist and create it
+      if (!std::filesystem::exists(dir))
+      {
+          std::filesystem::create_directory(dir);
+          std::cout << "Directory created\n";
+      }
+      else
+      {
+          std::cout << "Directory already exists\n";
+      }
+    }
 
     const std::string pvtu_filename = data_out.write_vtu_with_pvtu_record(
-      "./", "solution", timestep_no, mpi_communicator, 12);
+      "./"+prm.outputfolder+"/", "solution", timestep_no, mpi_communicator, 12);
 
     //const std::string pvtu_face_filename = data_out_face.write_vtu_with_pvtu_record(
      // "./", "boundary_id",  mpi_communicator, 12);
 
     data_out_face.write_vtu_in_parallel(
-                  "boundary_id.vtu",mpi_communicator);
+                  prm.outputfolder+"/boundary_id.vtu",mpi_communicator);
 
-    const std::string filename_h5 = "solution_" + std::to_string(present_time) + ".h5";
+    const std::string filename_h5 = prm.outputfolder+"/solution_" + std::to_string(present_time) + ".h5";
     DataOutBase::DataOutFilterFlags flags(true, true);
     DataOutBase::DataOutFilter data_filter(flags);
     data_out.write_filtered_data(data_filter);
@@ -1973,7 +1993,7 @@ data_out_eigen.add_data_vector(eigenfunctions[i],
         static std::vector<std::pair<double, std::string>> times_and_names;
         times_and_names.push_back(
           std::pair<double, std::string>(present_time, pvtu_filename));
-        std::ofstream pvd_output("solution.pvd");
+        std::ofstream pvd_output(prm.outputfolder+"/solution.pvd");
         DataOutBase::write_pvd_record(pvd_output, times_and_names);
 
 
@@ -2232,9 +2252,22 @@ int main(int argc, char **argv)
       using namespace Step_18_cyl;
  
       Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv, 1);
- 
-      TopLevel<3> elastic_problem("parameters.xml");
-      elastic_problem.run();
+
+      if (argc < 2) 
+      {
+        
+        std::cout << "Using default parameters.xml parameter file"<<std::endl;
+        TopLevel<3> elastic_problem("parameters.xml");
+        elastic_problem.run(); 
+
+      }
+      else{
+        std::string param_file = argv[1];
+        std::cout << "Using "<< param_file << " parameter file"<<std::endl;
+        TopLevel<3> elastic_problem(param_file);
+        elastic_problem.run();        
+      }
+      
     }
   catch (std::exception &exc)
     {

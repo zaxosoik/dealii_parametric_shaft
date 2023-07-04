@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ParameterHandler>
     <Bearings>
         <Bearing_20x>
@@ -89,7 +90,7 @@
             <pattern_description>[Integer range 1...2147483647 (inclusive)]</pattern_description>
         </Global_20refinements>
         <Half_20length>
-            <value>15.</value>
+            <value>15</value>
             <default_value>10.0</default_value>
             <documentation>Half length of the cylinder</documentation>
             <pattern>1</pattern>
@@ -226,7 +227,7 @@
             <pattern_description>[Selection Jacobi|Boomer|BlockJacobi ]</pattern_description>
         </Eigenprecond>
         <postproscriptpath>
-            <value>postpro_h5py_v2.py</value>
+            <value>postpro_h5py_v4.py</value>
             <default_value>postpro_h5py_v1.py</default_value>
             <documentation>Path to the postprocessing script</documentation>
             <pattern>7</pattern>
@@ -253,6 +254,13 @@
             <pattern>7</pattern>
             <pattern_description>[Selection yes|no ]</pattern_description>
         </DynamicMode>
+        <OutputFolder>
+            <value>test_1</value>
+            <default_value>output</default_value>
+            <documentation>Output folder</documentation>
+            <pattern>7</pattern>
+            <pattern_description>[ANYTHING]</pattern_description>
+        </OutputFolder>        
     </Solver>
     <Time>
         <End_20time>
