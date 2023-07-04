@@ -89,7 +89,7 @@
             <pattern_description>[Integer range 1...2147483647 (inclusive)]</pattern_description>
         </Global_20refinements>
         <Half_20length>
-            <value>15.5</value>
+            <value>15.</value>
             <default_value>10.0</default_value>
             <documentation>Half length of the cylinder</documentation>
             <pattern>1</pattern>

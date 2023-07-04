@@ -68,7 +68,7 @@ handler.parse()
 manager = ParameterManager(handler)
 
 # Change the value of a specific parameter
-if manager.set_parameter_value('Geometry', 'Half_20length', '15.5'):
+if manager.set_parameter_value('Geometry', 'Half_20length', '15.'):
     print('Parameter value updated successfully.')
 else:
     print('Failed to update parameter value.')

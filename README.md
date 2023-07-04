@@ -8,20 +8,20 @@ The executable also calls the python postprocessing script which in turn outputs
 In the code the Engine Power applied on the propeller side of the shaft is calculated based on the propeller law and divided by the ship's velocity to calculate the froce. The torque is also calculated based on the propeller law and applied on each point as a force with it's arm being the distance from the centroid.
 The bearing in the present code is simulated by a vertical movement of all of the boundary, but can be easily modified to act as a spring or have as an input the pressure produced by the oil film (if the the Reynolds equation is solved) and can potentialy simulate an imperfect alignment.
 ## Goals
-[X] Parametrically creating and meshing the shaft
-[X] Calculating the forces from the propeller
-[X] Static Analysis of the shaft without a bearing
-[X] Implementing the bearing as a displacement
-[X] Dynamic Simulation using Newmark's method for time integration
-[X] Plotting results to compare against analytical solutions
-[X] Automatic postprocessing
-[] Implementing bearing with the Reynold's Equation solution
-[] Implementing the Flywheel
-[] Calculating Eigenvalues without consuming too much RAM (Timoshenko's Beam?)  
-[] Plotting Campbell diagrams
-[] Batchrun a large volume of shafting systems
-[] Physics' Informed Neural Network
-[] 1D Simulation of the Engines Kinematics
+[X] Parametrically creating and meshing the shaft\\
+[X] Calculating the forces from the propeller\\
+[X] Static Analysis of the shaft without a bearing\\
+[X] Implementing the bearing as a displacement\\
+[X] Dynamic Simulation using Newmark's method for time integration\\
+[X] Plotting results to compare against analytical solutions\\
+[X] Automatic postprocessing\\
+[] Implementing bearing with the Reynold's Equation solution\\
+[] Implementing the Flywheel\\
+[] Calculating Eigenvalues without consuming too much RAM (Timoshenko's Beam?)  \\
+[] Plotting Campbell diagrams\\
+[] Batchrun a large volume of shafting systems\\
+[] Physics' Informed Neural Network\\
+[] 1D Simulation of the Engines Kinematics\\
 ### Future Goals
 [] Full FEA of the Engines Kinematics
 [] Adding frictional effects on bearings (friction coefficient)
