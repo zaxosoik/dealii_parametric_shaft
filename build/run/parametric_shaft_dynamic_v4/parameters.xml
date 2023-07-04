@@ -248,7 +248,7 @@
             <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
         </NewmarkBetaMethod_20Gamma>
         <DynamicMode>
-            <value>no</value>
+            <value>yes</value>
             <default_value>yes</default_value>
             <documentation>Will the dynamic mode be activated?</documentation>
             <pattern>7</pattern>
@@ -260,7 +260,7 @@
             <documentation>Output folder</documentation>
             <pattern>7</pattern>
             <pattern_description>[ANYTHING]</pattern_description>
-        </OutputFolder>        
+        </OutputFolder>
     </Solver>
     <Time>
         <End_20time>
