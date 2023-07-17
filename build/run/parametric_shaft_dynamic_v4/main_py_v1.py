@@ -1,5 +1,5 @@
 import xml.etree.ElementTree as ET
-
+import numpy as np
 class Parameter:
     def __init__(self, name, value, default_value, documentation, pattern, pattern_description, xml_element):
         self.name = name
@@ -92,17 +92,96 @@ class ParameterManager:
 
 
 with open('batch_parameters.xml', 'r') as f:
-    xml_data = f.read()
+    xml_data_batch = f.read()
 
+handler_batch = XMLHandler(xml_data_batch)
+handler_batch.parse()
+manager_batch = ParameterManager(handler_batch)
+#print(handler_batch.components)
+subcomponents = []
+count = 0
+for component in handler_batch.components:
+    print(f"Component: {component.name}")
+    
+    
+    for subcomponent in component.subcomponents:
+        subcomponents.append([0,0,0]) 
+        print(f"  Subcomponent: {subcomponent.name}")
+        param_count=0
+        for parameter in subcomponent.parameters:
+            
+            if parameter.value != None:
+                subcomponents[count][param_count]=float(parameter.value)
+                param_count +=1
+            
+                print(f"    Parameter: {parameter.name}")
+                print(f"      Value: {parameter.value}")
+            
+                    
+                
+        count +=1
+print(count)    
+print(subcomponents)
+with open('parameters.xml', 'r') as f:
+    xml_data = f.read()
 handler = XMLHandler(xml_data)
 handler.parse()
-
 manager = ParameterManager(handler)
+component_count = 0
 
+#for component in handler.components:
+#    component_count += 1
+#    parameter_count = 0
+#    for parameter in component.parameters:
+#        parameter_count +=1
+#        print(parameter_count)
+#        if parameter.name==handler_batch.components[component_count].subcomponents[parameter_count].name:
+#            print(handler_batch.components[component_count].subcomponents[parameter_count].parameters[0].name,handler_batch.components[component_count].subcomponents[parameter_count].parameters[0].value)
+component_count = 0     
+parameter_count = 0 
+batch_count = 1       
+subcomponents = np.array(subcomponents)
+#floats = [float(x) for x in subcomponents]       
+for component in handler.components:
+    print(f"  Component: {component.name}")
+    for parameter in component.parameters:
+        print(f"    Parameter: {parameter.name}")
+        if subcomponents[parameter_count][2]!=0:
+            param_linspace = np.arange(float(subcomponents[parameter_count][0]),float(subcomponents[parameter_count][1]),float(subcomponents[parameter_count][2]))
+            #print(param_linspace)
+            for i in param_linspace:
+                if manager.set_parameter_value(component.name, parameter.name,i):
+                    print('Parameter:',parameter.name ,' value updated successfully to ', i)
+                else:
+                    print('Failed to update parameter value.')
+                param_count_2 = 0
+                for component_2 in handler.components:
+                    for parameter_2 in component_2.parameters:
+                        if param_count_2 != parameter_count:
+                            if subcomponents[param_count_2][2]!=0:
+                                param_linspace_2 = np.arange(float(subcomponents[param_count_2][0]),float(subcomponents[param_count_2][1]),float(subcomponents[param_count_2][2]))
+                                for k in param_linspace_2:
+                                    if manager.set_parameter_value(component_2.name, parameter_2.name,i):
+                                        print('Parameter:',parameter_2.name ,' value updated successfully to ', k)
+                                    else:
+                                        print('Failed to update parameter value.')
+                            
+                                    batch_name = 'batch/parameters_'+str(batch_count).zfill(6)+'.xml'
+                                    if manager.set_parameter_value('Solver','OutputFolder', str(batch_count).zfill(6)):
+                                        print('Batch Output Folder updated successfully.')
+                                    else:
+                                        print('Failed to update Batch Output Folder.')
+                    
+                                    handler.save(batch_name)
+
+                                    batch_count +=1
+        parameter_count += 1
+        
+print(parameter_count)            
 # Change the value of a specific parameter
-if manager.set_parameter_value('Geometry', 'Half_20length_20Last', '20.'):
-    print('Parameter value updated successfully.')
-else:
-    print('Failed to update parameter value.')
-
-handler.save('batch_parameters.xml')  # save the modified XML tree back to the file
+#if manager.set_parameter_value('Geometry', 'Half_20length',subcomponents[1][0]):
+#    print('Parameter value updated successfully.')
+#else:
+#    print('Failed to update parameter value.')
+#
+#handler.save('parameters.xml')  # save the modified XML tree back to the file
