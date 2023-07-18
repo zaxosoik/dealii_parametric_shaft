@@ -22,3 +22,4 @@ build/run/**/*.pvtu
 build/run/**/*.h5
 build/run/**/batch/*.xml
 build/run/**/batch_runs/*
+build/run/**/batch_runs/*.py
