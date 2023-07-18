@@ -141,7 +141,8 @@ component_count = 0
 parameter_count = 0 
 batch_count = 1       
 subcomponents = np.array(subcomponents)
-#floats = [float(x) for x in subcomponents]       
+#floats = [float(x) for x in subcomponents]   
+batch_names_list = []    
 for component in handler.components:
     print(f"  Component: {component.name}")
     for parameter in component.parameters:
@@ -171,13 +172,13 @@ for component in handler.components:
                                         print('Batch Output Folder updated successfully.')
                                     else:
                                         print('Failed to update Batch Output Folder.')
-                    
+                                    batch_names_list.append(batch_name)
                                     handler.save(batch_name)
 
                                     batch_count +=1
         parameter_count += 1
         
-print('Batches Input File created: ',batch_count)            
+print('Batches Input File created: ',batch_count-1)            
 # Change the value of a specific parameter
 #if manager.set_parameter_value('Geometry', 'Half_20length',subcomponents[1][0]):
 #    print('Parameter value updated successfully.')
