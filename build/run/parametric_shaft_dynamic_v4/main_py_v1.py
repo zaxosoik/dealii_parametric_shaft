@@ -1,5 +1,10 @@
 import xml.etree.ElementTree as ET
 import numpy as np
+import shutil
+import os
+
+
+
 class Parameter:
     def __init__(self, name, value, default_value, documentation, pattern, pattern_description, xml_element):
         self.name = name
@@ -174,7 +179,13 @@ for component in handler.components:
                                         print('Failed to update Batch Output Folder.')
                                     batch_names_list.append(batch_name)
                                     handler.save(batch_name)
-
+                                    isExist = os.path.exists('batch_runs/'+str(batch_count).zfill(6))
+                                    if isExist:
+                                        print('Batch Output Folder created successfully.')
+                                    else:
+                                        os.makedirs('batch_runs/'+str(batch_count).zfill(6))
+                                    manager.set_parameter_value('Solver','postproscriptpath','postpro_h5py_v2.py')
+                                    shutil.copy('postpro_h5py_v2.py', 'batch_runs/'+str(batch_count).zfill(6))
                                     batch_count +=1
         parameter_count += 1
         

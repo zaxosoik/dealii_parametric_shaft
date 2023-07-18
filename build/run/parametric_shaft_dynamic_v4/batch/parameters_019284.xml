@@ -226,7 +226,7 @@
             <pattern_description>[Selection Jacobi|Boomer|BlockJacobi ]</pattern_description>
         </Eigenprecond>
         <postproscriptpath>
-            <value>26000.0</value>
+            <value>postpro_h5py_v2.py</value>
             <default_value>postpro_h5py_v1.py</default_value>
             <documentation>Path to the postprocessing script</documentation>
             <pattern>7</pattern>
