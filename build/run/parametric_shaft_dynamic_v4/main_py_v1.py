@@ -167,7 +167,7 @@ for component in handler.components:
                                         print('Failed to update parameter value.')
                             
                                     batch_name = 'batch/parameters_'+str(batch_count).zfill(6)+'.xml'
-                                    if manager.set_parameter_value('Solver','OutputFolder', str(batch_count).zfill(6)):
+                                    if manager.set_parameter_value('Solver','OutputFolder', 'batch_runs/'+str(batch_count).zfill(6)):
                                         print('Batch Output Folder updated successfully.')
                                     else:
                                         print('Failed to update Batch Output Folder.')

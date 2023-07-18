@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ParameterHandler>
     <Bearings>
         <Bearing_20x>
@@ -62,7 +63,7 @@
                 <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
             </Length_20of_20the_20Bearing_20Last>
             <Length_20of_20the_20Bearing_20Step>
-                <value>0.05</value>
+                <value>0.1</value>
                 <default_value>0.1</default_value>
                 <documentation>Step for the length of the bearing</documentation>
                 <pattern>9</pattern>
@@ -70,11 +71,13 @@
             </Length_20of_20the_20Bearing_20Step>
         </Length_20of_20the_20Bearing>
         <Viscocity>
-            <value>0.01</value>
-            <default_value>0.001</default_value>
-            <documentation>Viscocity of the bearing</documentation>
-            <pattern>11</pattern>
-            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            <Viscocity_20First>
+                <value>0.01</value>
+                <default_value>0.001</default_value>
+                <documentation>Viscocity of the bearing</documentation>
+                <pattern>11</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </Viscocity_20First>
         </Viscocity>
         <Bearing>
             <bearings_20First>
@@ -108,7 +111,7 @@
                 <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
             </Bearing_20Displacement_20First>
             <Bearing_20Displacement_20Last>
-                <value>0.5</value>
+                <value>0.2</value>
                 <default_value>0.5</default_value>
                 <documentation>Displacement of the bearing</documentation>
                 <pattern>12</pattern>
@@ -123,11 +126,13 @@
             </Bearing_20Displacement_20Step>
         </Bearing_20Displacement>
         <Direction>
-            <value>3</value>
-            <default_value>3</default_value>
-            <documentation>Direction of the bearing Displacement</documentation>
-            <pattern>7</pattern>
-            <pattern_description>[Selection 1|2|3 ]</pattern_description>
+            <Direction_20First>
+                <value>3</value>
+                <default_value>3</default_value>
+                <documentation>Direction of the bearing Displacement</documentation>
+                <pattern>7</pattern>
+                <pattern_description>[Selection 1|2|3 ]</pattern_description>
+            </Direction_20First>
         </Direction>
     </Bearings>
     <Engine>
@@ -199,7 +204,7 @@
                 <pattern>5</pattern>
                 <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
             </RPM_20MCR_20Step>
-            </RPM_20MCR>
+        </RPM_20MCR>
         <VSHIP>
             <VSHIP_20First>
                 <value>10</value>
@@ -241,7 +246,7 @@
                 <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
             </Half_20length_20First>
             <Half_20length_20Last>
-                <value>20.</value>
+                <value>20</value>
                 <default_value>20.0</default_value>
                 <documentation>Half length of the cylinder</documentation>
                 <pattern>1</pattern>
@@ -262,27 +267,29 @@
             <pattern>2</pattern>
             <pattern_description>[Integer range 1...2147483647 (inclusive)]</pattern_description>
         </Partitions>
-        <Radius_20First>
-            <value>0.2</value>
-            <default_value>0.5</default_value>
-            <documentation>Radius of the cylinder</documentation>
-            <pattern>0</pattern>
-            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
-        </Radius_20First>
-        <Radius_20Last>
-            <value>2</value>
-            <default_value>2.0</default_value>
-            <documentation>Radius of the cylinder</documentation>
-            <pattern>0</pattern>
-            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
-        </Radius_20Last>
-        <Radius_20Step>
-            <value>0.1</value>
-            <default_value>1.0</default_value>
-            <documentation>Step for the radius of the cylinder</documentation>
-            <pattern>0</pattern>
-            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
-        </Radius_20Step>
+        <Radius>
+            <Radius_20First>
+                <value>0.2</value>
+                <default_value>0.5</default_value>
+                <documentation>Radius of the cylinder</documentation>
+                <pattern>0</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </Radius_20First>
+            <Radius_20Last>
+                <value>2</value>
+                <default_value>2.0</default_value>
+                <documentation>Radius of the cylinder</documentation>
+                <pattern>0</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </Radius_20Last>
+            <Radius_20Step>
+                <value>0.1</value>
+                <default_value>1.0</default_value>
+                <documentation>Step for the radius of the cylinder</documentation>
+                <pattern>0</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </Radius_20Step>
+        </Radius>
     </Geometry>
     <Materials>
         <Density>
@@ -400,7 +407,7 @@
             <pattern_description>[Selection Jacobi|Boomer|BlockJacobi ]</pattern_description>
         </Eigenprecond>
         <postproscriptpath>
-            <value>postpro_h5py_v2.py</value>
+            <value>postpro_h5py_v4.py</value>
             <default_value>postpro_h5py_v1.py</default_value>
             <documentation>Path to the postprocessing script</documentation>
             <pattern>7</pattern>
