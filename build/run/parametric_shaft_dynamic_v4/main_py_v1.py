@@ -177,7 +177,7 @@ for component in handler.components:
                                     batch_count +=1
         parameter_count += 1
         
-print(parameter_count)            
+print('Batches Input File created: ',batch_count)            
 # Change the value of a specific parameter
 #if manager.set_parameter_value('Geometry', 'Half_20length',subcomponents[1][0]):
 #    print('Parameter value updated successfully.')
