@@ -2,7 +2,7 @@ import xml.etree.ElementTree as ET
 import numpy as np
 import shutil
 import os
-
+import subprocess
 
 
 class Parameter:
@@ -142,6 +142,17 @@ component_count = 0
 #        print(parameter_count)
 #        if parameter.name==handler_batch.components[component_count].subcomponents[parameter_count].name:
 #            print(handler_batch.components[component_count].subcomponents[parameter_count].parameters[0].name,handler_batch.components[component_count].subcomponents[parameter_count].parameters[0].value)
+
+isExist = os.path.exists('batch_runs')
+if isExist:
+    print('Batch Runs Folder created successfully.')
+else:
+    os.makedirs('batch_runs')
+isExist = os.path.exists('batch')
+if isExist:
+    print('Batch Output Folder created successfully.')
+else:
+    os.makedirs('batch')    
 component_count = 0     
 parameter_count = 0 
 batch_count = 1       
@@ -164,7 +175,7 @@ for component in handler.components:
                 for component_2 in handler.components:
                     for parameter_2 in component_2.parameters:
                         if param_count_2 != parameter_count:
-                            if subcomponents[param_count_2][2]!=0:
+                            if subcomponents[param_count_2][2]>np.abs(10-15):
                                 param_linspace_2 = np.arange(float(subcomponents[param_count_2][0]),float(subcomponents[param_count_2][1]),float(subcomponents[param_count_2][2]))
                                 for k in param_linspace_2:
                                     if manager.set_parameter_value(component_2.name, parameter_2.name,i):
@@ -184,12 +195,32 @@ for component in handler.components:
                                         print('Batch Output Folder created successfully.')
                                     else:
                                         os.makedirs('batch_runs/'+str(batch_count).zfill(6))
-                                    manager.set_parameter_value('Solver','postproscriptpath','postpro_h5py_v2.py')
+                                    manager.set_parameter_value('Solver','postproscriptpath','batch_runs/'+str(batch_count).zfill(6)+'postpro_h5py_v2.py')
                                     shutil.copy('postpro_h5py_v2.py', 'batch_runs/'+str(batch_count).zfill(6))
+                                    print('Batch Count: ', batch_count)
                                     batch_count +=1
+                                    
+             
+                        param_count_2 +=1
         parameter_count += 1
+
+def run_command_with_args(arg):
+    command = "mpirun -np 12 ./parametric_shaft_dynamic_v4 " + arg
+    process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, stderr = process.communicate()
+    
+    if process.returncode != 0:
+        print(f"Error occurred: {stderr.decode()}")
+    else:
+        print(stdout.decode())
         
-print('Batches Input File created: ',batch_count-1)            
+             
+print('Batches Input File created: ',batch_count-1)        
+print('----------------------------')
+print('Batches Folders and Input Files Created, Running Batch Run...')
+#for i in batch_names_list:
+   # print('Running Batch number: ',i)
+    #run_command_with_args(i)    
 # Change the value of a specific parameter
 #if manager.set_parameter_value('Geometry', 'Half_20length',subcomponents[1][0]):
 #    print('Parameter value updated successfully.')

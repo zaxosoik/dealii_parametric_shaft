@@ -92,7 +92,7 @@ parametric_shaft_dynamic_v4_EXTERNAL_OBJECTS =
 
 run/parametric_shaft_dynamic_v4/parametric_shaft_dynamic_v4: CMakeFiles/parametric_shaft_dynamic_v4.dir/src/parametric_shaft_dynamic_v4.cpp.o
 run/parametric_shaft_dynamic_v4/parametric_shaft_dynamic_v4: CMakeFiles/parametric_shaft_dynamic_v4.dir/build.make
-run/parametric_shaft_dynamic_v4/parametric_shaft_dynamic_v4: /usr/local/lib/libdeal_II.so.9.5.0-pre
+run/parametric_shaft_dynamic_v4/parametric_shaft_dynamic_v4: /usr/local/lib/libdeal_II.so.9.6.0-pre
 run/parametric_shaft_dynamic_v4/parametric_shaft_dynamic_v4: /usr/lib/x86_64-linux-gnu/openmpi/lib/libmpi_cxx.so
 run/parametric_shaft_dynamic_v4/parametric_shaft_dynamic_v4: /usr/lib/x86_64-linux-gnu/libboost_iostreams.so
 run/parametric_shaft_dynamic_v4/parametric_shaft_dynamic_v4: /usr/lib/x86_64-linux-gnu/libboost_serialization.so
@@ -101,8 +101,8 @@ run/parametric_shaft_dynamic_v4/parametric_shaft_dynamic_v4: /usr/lib/x86_64-lin
 run/parametric_shaft_dynamic_v4/parametric_shaft_dynamic_v4: /usr/lib/x86_64-linux-gnu/libboost_regex.so
 run/parametric_shaft_dynamic_v4/parametric_shaft_dynamic_v4: /usr/lib/x86_64-linux-gnu/libboost_chrono.so
 run/parametric_shaft_dynamic_v4/parametric_shaft_dynamic_v4: /usr/lib/x86_64-linux-gnu/libboost_atomic.so
-run/parametric_shaft_dynamic_v4/parametric_shaft_dynamic_v4: /usr/local/lib/libkokkoscore.so
-run/parametric_shaft_dynamic_v4/parametric_shaft_dynamic_v4: /usr/local/lib/libkokkoscontainers.so
+run/parametric_shaft_dynamic_v4/parametric_shaft_dynamic_v4: /usr/local/lib/libkokkoscore.so.3.7.01
+run/parametric_shaft_dynamic_v4/parametric_shaft_dynamic_v4: /usr/local/lib/libkokkoscontainers.so.3.7.01
 run/parametric_shaft_dynamic_v4/parametric_shaft_dynamic_v4: /usr/lib/x86_64-linux-gnu/libarpack.so
 run/parametric_shaft_dynamic_v4/parametric_shaft_dynamic_v4: /usr/lib/x86_64-linux-gnu/libmpfr.so
 run/parametric_shaft_dynamic_v4/parametric_shaft_dynamic_v4: /usr/lib/libhdf5.so

@@ -1,28 +1,28 @@
 <ParameterHandler>
     <Bearings>
         <Bearing_20x>
-            <value>0.2</value>
+            <value>-0.5</value>
             <default_value>0.5</default_value>
             <documentation>x coordinate of the bearing</documentation>
             <pattern>8</pattern>
             <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
         </Bearing_20x>
         <Diameter_20Bearing>
-            <value>0.2</value>
+            <value>1</value>
             <default_value>1.05</default_value>
             <documentation>Diameter of the bearing</documentation>
             <pattern>10</pattern>
             <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
         </Diameter_20Bearing>
         <Length_20of_20the_20Bearing>
-            <value>0.2</value>
+            <value>0.9499999999999997</value>
             <default_value>1.0</default_value>
             <documentation>Length of the bearing</documentation>
             <pattern>9</pattern>
             <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
         </Length_20of_20the_20Bearing>
         <Viscocity>
-            <value>0.2</value>
+            <value>0.01</value>
             <default_value>0.001</default_value>
             <documentation>Viscocity of the bearing</documentation>
             <pattern>11</pattern>
@@ -52,7 +52,7 @@
     </Bearings>
     <Engine>
         <MCR>
-            <value>39000.0</value>
+            <value>-0.5</value>
             <default_value>15000.0</default_value>
             <documentation>Maximum continuous rating (kW)</documentation>
             <pattern>4</pattern>
@@ -226,7 +226,7 @@
             <pattern_description>[Selection Jacobi|Boomer|BlockJacobi ]</pattern_description>
         </Eigenprecond>
         <postproscriptpath>
-            <value>postpro_h5py_v2.py</value>
+            <value>batch_runs/000031postpro_h5py_v2.py</value>
             <default_value>postpro_h5py_v1.py</default_value>
             <documentation>Path to the postprocessing script</documentation>
             <pattern>7</pattern>
