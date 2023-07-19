@@ -263,7 +263,7 @@
     </Solver>
     <Time>
         <End_20time>
-            <value>3</value>
+            <value>6</value>
             <default_value>1</default_value>
             <documentation>End time</documentation>
             <pattern>22</pattern>

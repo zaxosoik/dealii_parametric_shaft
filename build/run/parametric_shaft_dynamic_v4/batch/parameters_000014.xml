@@ -1,7 +1,7 @@
 <ParameterHandler>
     <Bearings>
         <Bearing_20x>
-            <value>-0.5</value>
+            <value>0.0</value>
             <default_value>0.5</default_value>
             <documentation>x coordinate of the bearing</documentation>
             <pattern>8</pattern>
@@ -52,7 +52,7 @@
     </Bearings>
     <Engine>
         <MCR>
-            <value>-0.5</value>
+            <value>0.0</value>
             <default_value>15000.0</default_value>
             <documentation>Maximum continuous rating (kW)</documentation>
             <pattern>4</pattern>
@@ -263,7 +263,7 @@
     </Solver>
     <Time>
         <End_20time>
-            <value>3</value>
+            <value>6</value>
             <default_value>1</default_value>
             <documentation>End time</documentation>
             <pattern>22</pattern>

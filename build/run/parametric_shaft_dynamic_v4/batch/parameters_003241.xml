@@ -1,7 +1,7 @@
 <ParameterHandler>
     <Bearings>
         <Bearing_20x>
-            <value>0.3999999999999998</value>
+            <value>0.4</value>
             <default_value>0.5</default_value>
             <documentation>x coordinate of the bearing</documentation>
             <pattern>8</pattern>
@@ -52,7 +52,7 @@
     </Bearings>
     <Engine>
         <MCR>
-            <value>3.500000000000001</value>
+            <value>4.000000000000002</value>
             <default_value>15000.0</default_value>
             <documentation>Maximum continuous rating (kW)</documentation>
             <pattern>4</pattern>
@@ -89,7 +89,7 @@
             <pattern_description>[Integer range 1...2147483647 (inclusive)]</pattern_description>
         </Global_20refinements>
         <Half_20length>
-            <value>3.500000000000001</value>
+            <value>4.000000000000002</value>
             <default_value>10.0</default_value>
             <documentation>Half length of the cylinder</documentation>
             <pattern>1</pattern>
@@ -263,7 +263,7 @@
     </Solver>
     <Time>
         <End_20time>
-            <value>3</value>
+            <value>6</value>
             <default_value>1</default_value>
             <documentation>End time</documentation>
             <pattern>22</pattern>

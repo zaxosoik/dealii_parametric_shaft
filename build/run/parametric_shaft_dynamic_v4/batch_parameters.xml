@@ -3,8 +3,8 @@
     <Bearings>
         <Bearing_20x>
             <Bearing_20x_20First>
-                <value>-0.5</value>
-                <default_value>-0.5</default_value>
+                <value>0.</value>
+                <default_value>0</default_value>
                 <documentation>First x coordinate of the bearing</documentation>
                 <pattern>8</pattern>
                 <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
