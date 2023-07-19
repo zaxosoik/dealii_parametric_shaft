@@ -218,9 +218,9 @@ def run_command_with_args(arg):
 print('Batches Input File created: ',batch_count-1)        
 print('----------------------------')
 print('Batches Folders and Input Files Created, Running Batch Run...')
-#for i in batch_names_list:
-   # print('Running Batch number: ',i)
-    #run_command_with_args(i)    
+for i in batch_names_list:
+    print('Running Batch number: ',i)
+    run_command_with_args(i)    
 # Change the value of a specific parameter
 #if manager.set_parameter_value('Geometry', 'Half_20length',subcomponents[1][0]):
 #    print('Parameter value updated successfully.')
