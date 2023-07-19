@@ -2,9 +2,8 @@
     "cmake.configureOnOpen": true,
     "files.watcherExclude": {
         "**/batch/**": true,
-        "**/batch_run/**": true,
-        "**/.git/subtree-cache/**": true,
-        "**/node_modules/*/**": true
+        "**/batch_run/**": true
+
       }
     
 }
