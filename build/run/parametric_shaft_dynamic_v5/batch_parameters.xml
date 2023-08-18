@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ParameterHandler>
+    <Bearings>
+        <Bearing_20x>
+            <Bearing_20x_20First>
+                <value>0.</value>
+                <default_value>0</default_value>
+                <documentation>First x coordinate of the bearing</documentation>
+                <pattern>8</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </Bearing_20x_20First>
+            <Bearing_20x_20Last>
+                <value>0.5</value>
+                <default_value>0.5</default_value>
+                <documentation>Last x coordinate of the bearing</documentation>
+                <pattern>8</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </Bearing_20x_20Last>
+            <Bearing_20x_20Step>
+                <value>0.1</value>
+                <default_value>0.1</default_value>
+                <documentation>Step for x coordinate of the bearing</documentation>
+                <pattern>8</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </Bearing_20x_20Step>
+        </Bearing_20x>
+        <Diameter_20Bearing>
+            <Diameter_20Bearing_20First>
+                <value>1</value>
+                <default_value>1.05</default_value>
+                <documentation>Diameter of the bearing</documentation>
+                <pattern>10</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </Diameter_20Bearing_20First>
+            <Diameter_20Bearing_20Last>
+                <value>1</value>
+                <default_value>1.05</default_value>
+                <documentation>Diameter of the bearing</documentation>
+                <pattern>10</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </Diameter_20Bearing_20Last>
+            <Diameter_20Bearing_20Step>
+                <value>0</value>
+                <default_value>0.</default_value>
+                <documentation>Step for the diameter of the bearing</documentation>
+                <pattern>10</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </Diameter_20Bearing_20Step>
+        </Diameter_20Bearing>
+        <Length_20of_20the_20Bearing>
+            <Length_20of_20the_20Bearing_20First>
+                <value>0.2</value>
+                <default_value>1.0</default_value>
+                <documentation>Length of the bearing</documentation>
+                <pattern>9</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </Length_20of_20the_20Bearing_20First>
+            <Length_20of_20the_20Bearing_20Last>
+                <value>1</value>
+                <default_value>1.0</default_value>
+                <documentation>Length of the bearing</documentation>
+                <pattern>9</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </Length_20of_20the_20Bearing_20Last>
+            <Length_20of_20the_20Bearing_20Step>
+                <value>0.1</value>
+                <default_value>0.1</default_value>
+                <documentation>Step for the length of the bearing</documentation>
+                <pattern>9</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </Length_20of_20the_20Bearing_20Step>
+        </Length_20of_20the_20Bearing>
+        <Viscocity>
+            <Viscocity_20First>
+                <value>0.01</value>
+                <default_value>0.001</default_value>
+                <documentation>Viscocity of the bearing</documentation>
+                <pattern>11</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </Viscocity_20First>
+        </Viscocity>
+        <Bearing>
+            <bearings_20First>
+                <value>1</value>
+                <default_value>1</default_value>
+                <documentation>Number of bearings</documentation>
+                <pattern>7</pattern>
+                <pattern_description>[Integer range 1...2147483647 (inclusive)]</pattern_description>
+            </bearings_20First>
+            <bearings_20Last>
+                <value>1</value>
+                <default_value>1</default_value>
+                <documentation>Number of bearings</documentation>
+                <pattern>7</pattern>
+                <pattern_description>[Integer range 1...2147483647 (inclusive)]</pattern_description>
+            </bearings_20Last>
+            <bearings_20Step>
+                <value>0</value>
+                <default_value>0</default_value>
+                <documentation>Step for the number of bearings</documentation>
+                <pattern>7</pattern>
+                <pattern_description>[Integer range 1...2147483647 (inclusive)]</pattern_description>
+            </bearings_20Step>
+        </Bearing>
+        <Bearing_20Displacement>
+            <Bearing_20Displacement_20First>
+                <value>0</value>
+                <default_value>0.0</default_value>
+                <documentation>Displacement of the bearing</documentation>
+                <pattern>12</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </Bearing_20Displacement_20First>
+            <Bearing_20Displacement_20Last>
+                <value>0.2</value>
+                <default_value>0.5</default_value>
+                <documentation>Displacement of the bearing</documentation>
+                <pattern>12</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </Bearing_20Displacement_20Last>
+            <Bearing_20Displacement_20Step>
+                <value>0.01</value>
+                <default_value>0.1</default_value>
+                <documentation>Step for the displacement of the bearing</documentation>
+                <pattern>12</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </Bearing_20Displacement_20Step>
+        </Bearing_20Displacement>
+        <Direction>
+            <Direction_20First>
+                <value>3</value>
+                <default_value>3</default_value>
+                <documentation>Direction of the bearing Displacement</documentation>
+                <pattern>7</pattern>
+                <pattern_description>[Selection 1|2|3 ]</pattern_description>
+            </Direction_20First>
+        </Direction>
+    </Bearings>
+    <Engine>
+        <MCR>
+            <MCR_20First>
+                <value>5000</value>
+                <default_value>5000.0</default_value>
+                <documentation>Maximum continuous rating (kW)</documentation>
+                <pattern>4</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </MCR_20First>
+            <MCR_20Last>
+                <value>40000</value>
+                <default_value>40000.0</default_value>
+                <documentation>Maximum continuous rating (kW)</documentation>
+                <pattern>4</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </MCR_20Last>
+            <MCR_20Step>
+                <value>1000</value>
+                <default_value>1000.0</default_value>
+                <documentation>Step for the maximum continuous rating (kW)</documentation>
+                <pattern>4</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </MCR_20Step>
+        </MCR>
+        <RPM>
+            <RPM_20First>
+                <value>45</value>
+                <default_value>45.0</default_value>
+                <documentation>RPM</documentation>
+                <pattern>6</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </RPM_20First>
+            <RPM_20Last>
+                <value>130</value>
+                <default_value>130.0</default_value>
+                <documentation>RPM</documentation>
+                <pattern>6</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </RPM_20Last>
+            <RPM_20Step>
+                <value>5</value>
+                <default_value>5.0</default_value>
+                <documentation>Step for the RPM</documentation>
+                <pattern>6</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </RPM_20Step>
+        </RPM>
+        <RPM_20MCR>
+            <RPM_20MCR_20First>
+                <value>70</value>
+                <default_value>70.0</default_value>
+                <documentation>RPM at MCR</documentation>
+                <pattern>5</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </RPM_20MCR_20First>
+            <RPM_20MCR_20Last>
+                <value>130</value>
+                <default_value>130.0</default_value>
+                <documentation>RPM at MCR</documentation>
+                <pattern>5</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </RPM_20MCR_20Last>
+            <RPM_20MCR_20Step>
+                <value>5</value>
+                <default_value>5.0</default_value>
+                <documentation>Step for the RPM at MCR</documentation>
+                <pattern>5</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </RPM_20MCR_20Step>
+        </RPM_20MCR>
+        <VSHIP>
+            <VSHIP_20First>
+                <value>10</value>
+                <default_value>10.0</default_value>
+                <documentation>Speed of the ship (knots)</documentation>
+                <pattern>5</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </VSHIP_20First>
+            <VSHIP_20Last>
+                <value>25</value>
+                <default_value>25.0</default_value>
+                <documentation>Speed of the ship (knots)</documentation>
+                <pattern>5</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </VSHIP_20Last>
+            <VSHIP_20Step>
+                <value>1</value>
+                <default_value>1.0</default_value>
+                <documentation>Step for the speed of the ship (knots)</documentation>
+                <pattern>5</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </VSHIP_20Step>
+        </VSHIP>
+    </Engine>
+    <Geometry>
+        <Global_20refinements>
+            <value>2</value>
+            <default_value>2</default_value>
+            <documentation>Number of global refinements</documentation>
+            <pattern>3</pattern>
+            <pattern_description>[Integer range 1...2147483647 (inclusive)]</pattern_description>
+        </Global_20refinements>
+        <Half_20length>
+            <Half_20length_20First>
+                <value>2.5</value>
+                <default_value>5.0</default_value>
+                <documentation>Half length of the cylinder</documentation>
+                <pattern>1</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </Half_20length_20First>
+            <Half_20length_20Last>
+                <value>20</value>
+                <default_value>20.0</default_value>
+                <documentation>Half length of the cylinder</documentation>
+                <pattern>1</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </Half_20length_20Last>
+            <Half_20length_20Step>
+                <value>0.1</value>
+                <default_value>1.0</default_value>
+                <documentation>Step for the half length of the cylinder</documentation>
+                <pattern>1</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </Half_20length_20Step>
+        </Half_20length>
+        <Partitions>
+            <value>10</value>
+            <default_value>10</default_value>
+            <documentation>Number of partitions</documentation>
+            <pattern>2</pattern>
+            <pattern_description>[Integer range 1...2147483647 (inclusive)]</pattern_description>
+        </Partitions>
+        <Radius>
+            <Radius_20First>
+                <value>0.2</value>
+                <default_value>0.5</default_value>
+                <documentation>Radius of the cylinder</documentation>
+                <pattern>0</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </Radius_20First>
+            <Radius_20Last>
+                <value>2</value>
+                <default_value>2.0</default_value>
+                <documentation>Radius of the cylinder</documentation>
+                <pattern>0</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </Radius_20Last>
+            <Radius_20Step>
+                <value>0.1</value>
+                <default_value>1.0</default_value>
+                <documentation>Step for the radius of the cylinder</documentation>
+                <pattern>0</pattern>
+                <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+            </Radius_20Step>
+        </Radius>
+    </Geometry>
+    <Materials>
+        <Density>
+            <value>7700</value>
+            <default_value>7700</default_value>
+            <documentation>Density</documentation>
+            <pattern>20</pattern>
+            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+        </Density>
+        <Gravity>
+            <value>9.81</value>
+            <default_value>9.81</default_value>
+            <documentation>Gravity</documentation>
+            <pattern>21</pattern>
+            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+        </Gravity>
+        <Lambda>
+            <value>9.695e+10</value>
+            <default_value>96.95e9</default_value>
+            <documentation>Lambda</documentation>
+            <pattern>19</pattern>
+            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+        </Lambda>
+        <Mu>
+            <value>7.617e+10</value>
+            <default_value>76.17e9</default_value>
+            <documentation>Mu</documentation>
+            <pattern>18</pattern>
+            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+        </Mu>
+        <Poisson_20Ratio>
+            <value>0.3</value>
+            <default_value>0.499</default_value>
+            <documentation>Poisson Ratio</documentation>
+            <pattern>16</pattern>
+            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+        </Poisson_20Ratio>
+        <Yield_20Stress>
+            <value>4e+08</value>
+            <default_value>448e9</default_value>
+            <documentation>Yield Stress</documentation>
+            <pattern>17</pattern>
+            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+        </Yield_20Stress>
+        <Young_27s_20Modulus>
+            <value>2.1e+11</value>
+            <default_value>210e12</default_value>
+            <documentation>Young's Modulus</documentation>
+            <pattern>15</pattern>
+            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+        </Young_27s_20Modulus>
+        <Mu_20Rayleigh>
+            <value>0.025</value>
+            <default_value>0.025</default_value>
+            <documentation>Mu Parameter for Rayleigh Damping</documentation>
+            <pattern>16</pattern>
+            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+        </Mu_20Rayleigh>
+        <Lambda_20Rayleigh>
+            <value>0.023</value>
+            <default_value>0.025</default_value>
+            <documentation>Lambda Parameter for Rayleigh Damping</documentation>
+            <pattern>16</pattern>
+            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+        </Lambda_20Rayleigh>
+    </Materials>
+    <Solver>
+        <Max_20iterations>
+            <value>10000</value>
+            <default_value>10000</default_value>
+            <documentation>Maximum number of iterations</documentation>
+            <pattern>13</pattern>
+            <pattern_description>[Integer range 1...232147483647 (inclusive)]</pattern_description>
+        </Max_20iterations>
+        <Number_20of_20refinement_20cycles>
+            <value>10</value>
+            <default_value>5</default_value>
+            <documentation>Number of refinement cycles</documentation>
+            <pattern>14</pattern>
+            <pattern_description>[Integer range 1...2147483647 (inclusive)]</pattern_description>
+        </Number_20of_20refinement_20cycles>
+        <Tolerance>
+            <value>1e-16</value>
+            <default_value>0.000000001</default_value>
+            <documentation>Tolerance of the solver</documentation>
+            <pattern>12</pattern>
+            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+        </Tolerance>
+        <Eigenmodes>
+            <value>no</value>
+            <default_value>yes</default_value>
+            <documentation>Will the eigenvalues be computed?</documentation>
+            <pattern>7</pattern>
+            <pattern_description>[Selection yes|no ]</pattern_description>
+        </Eigenmodes>
+        <EigenmodesNumber>
+            <value>All</value>
+            <default_value>5</default_value>
+            <documentation>How many eigenmodes will be computed? For Damping Matrix All is required</documentation>
+            <pattern>7</pattern>
+            <pattern_description>[Selection 5|10|All ]</pattern_description>
+        </EigenmodesNumber>
+        <Eigensolver>
+            <value>KrylovSchur</value>
+            <default_value>KrylovSchur</default_value>
+            <documentation>Eigenspectrum Solver</documentation>
+            <pattern>7</pattern>
+            <pattern_description>[Selection KrylovSchur|GeneralizedDavidson|JacobiDavidson|Lanczos ]</pattern_description>
+        </Eigensolver>
+        <Eigenprecond>
+            <value>BlockJacobi</value>
+            <default_value>Jacobi</default_value>
+            <documentation>Eigenspectrum Preconditioner</documentation>
+            <pattern>7</pattern>
+            <pattern_description>[Selection Jacobi|Boomer|BlockJacobi ]</pattern_description>
+        </Eigenprecond>
+        <postproscriptpath>
+            <value>postpro_h5py_v4.py</value>
+            <default_value>postpro_h5py_v1.py</default_value>
+            <documentation>Path to the postprocessing script</documentation>
+            <pattern>7</pattern>
+            <pattern_description>[ANYTHING]</pattern_description>
+        </postproscriptpath>
+        <NewmarkBetaMethod_20Beta>
+            <value>0.25</value>
+            <default_value>0.25</default_value>
+            <documentation>Beta parameter of the Newmark method</documentation>
+            <pattern>12</pattern>
+            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+        </NewmarkBetaMethod_20Beta>
+        <NewmarkBetaMethod_20Gamma>
+            <value>0.5</value>
+            <default_value>0.5</default_value>
+            <documentation>Gamma parameter of the Newmark method</documentation>
+            <pattern>12</pattern>
+            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+        </NewmarkBetaMethod_20Gamma>
+        <DynamicMode>
+            <value>yes</value>
+            <default_value>yes</default_value>
+            <documentation>Will the dynamic mode be activated?</documentation>
+            <pattern>7</pattern>
+            <pattern_description>[Selection yes|no ]</pattern_description>
+        </DynamicMode>
+        <OutputFolder>
+            <value>test_1</value>
+            <default_value>output</default_value>
+            <documentation>Output folder</documentation>
+            <pattern>7</pattern>
+            <pattern_description>[ANYTHING]</pattern_description>
+        </OutputFolder>
+    </Solver>
+    <Time>
+        <End_20time>
+            <value>5</value>
+            <default_value>1</default_value>
+            <documentation>End time</documentation>
+            <pattern>22</pattern>
+            <pattern_description>[Double -MAX_DOUBLE...MAX_DOUBLE (inclusive)]</pattern_description>
+        </End_20time>
+        <Time_20step_20size>
+            <value>0.1</value>
+            <default_value>0.1</default_value>
+            <documentation>Time step size</documentation>
+            <pattern>23</pattern>
+            <pattern_description>[Double -MAX_DOUBLE...MAX_DOUBLE (inclusive)]</pattern_description>
+        </Time_20step_20size>
+    </Time>
+</ParameterHandler>

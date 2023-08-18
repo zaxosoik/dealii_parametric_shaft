@@ -58,6 +58,7 @@
 #include <deal.II/lac/slepc_solver.h>
 
 #include <deal.II/base/hdf5.h>
+#include "petscmat.h" 
 
 
 #include <vector>
@@ -1672,7 +1673,9 @@ const SymmetricTensor<4, dim> TopLevel<dim>::stress_strain_tensor =
  
    
     if (prm.dynamicmode)
-          system_matrix.add(1.0,system_mass_matrix.add(prm.gamma*prm.delta_t,system_damping_matrix.add(prm.beta*prm.delta_t*prm.delta_t,system_matrix)));
+          //system_matrix.add(6/(prm.delta_t*prm.delta_t),system_mass_matrix.add(prm.gamma*prm.delta_t,system_damping_matrix.add(prm.beta*prm.delta_t*prm.delta_t,system_matrix)));
+          system_matrix.add(6/(prm.delta_t*prm.delta_t),system_mass_matrix.add(prm.gamma*prm.delta_t,system_damping_matrix));
+
     PETScWrappers::PreconditionBlockJacobi preconditioner(system_matrix);
     cg.solve(system_matrix,
              distributed_incremental_displacement,
