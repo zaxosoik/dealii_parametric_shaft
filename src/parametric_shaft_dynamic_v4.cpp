@@ -889,7 +889,7 @@ const SymmetricTensor<4, dim> TopLevel<dim>::stress_strain_tensor =
   {
     AssertDimension(values.size(), dim);
     values = 0;
-    values(0) = pressure;
+    values(0)  = pressure;
 
   }
 

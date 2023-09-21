@@ -2,7 +2,7 @@
 <ParameterHandler>
     <Bearings>
         <Bearing_20x>
-            <value>0.3999999999999998</value>
+            <value>0</value>
             <default_value>0.5</default_value>
             <documentation>x coordinate of the bearing</documentation>
             <pattern>8</pattern>
@@ -16,7 +16,7 @@
             <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
         </Diameter_20Bearing>
         <Length_20of_20the_20Bearing>
-            <value>0.9499999999999997</value>
+            <value>0.5</value>
             <default_value>1.0</default_value>
             <documentation>Length of the bearing</documentation>
             <pattern>9</pattern>
@@ -37,7 +37,7 @@
             <pattern_description>[Integer range 1...2147483647 (inclusive)]</pattern_description>
         </bearings>
         <Bearing_20Displacement>
-            <value>0.49</value>
+            <value>0.1</value>
             <default_value>0.01</default_value>
             <documentation>Displacement of the bearing</documentation>
             <pattern>12</pattern>
@@ -53,14 +53,14 @@
     </Bearings>
     <Engine>
         <MCR>
-            <value>39000</value>
+            <value>10000</value>
             <default_value>15000.0</default_value>
             <documentation>Maximum continuous rating (kW)</documentation>
             <pattern>4</pattern>
             <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
         </MCR>
         <RPM>
-            <value>125</value>
+            <value>99</value>
             <default_value>1000.0</default_value>
             <documentation>RPM</documentation>
             <pattern>6</pattern>
@@ -74,7 +74,7 @@
             <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
         </RPM_20MCR>
         <VSHIP>
-            <value>24</value>
+            <value>14</value>
             <default_value>20.0</default_value>
             <documentation>Speed of the ship (knots)</documentation>
             <pattern>5</pattern>
@@ -97,7 +97,7 @@
             <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
         </Half_20length>
         <Partitions>
-            <value>10</value>
+            <value>60</value>
             <default_value>10</default_value>
             <documentation>Number of partitions</documentation>
             <pattern>2</pattern>
@@ -181,18 +181,18 @@
             <value>10000</value>
             <default_value>10000</default_value>
             <documentation>Maximum number of iterations</documentation>
-            <pattern>13</pattern>
+            <pattern>14</pattern>
             <pattern_description>[Integer range 1...232147483647 (inclusive)]</pattern_description>
         </Max_20iterations>
         <Number_20of_20refinement_20cycles>
-            <value>10</value>
+            <value>1</value>
             <default_value>5</default_value>
             <documentation>Number of refinement cycles</documentation>
             <pattern>14</pattern>
             <pattern_description>[Integer range 1...2147483647 (inclusive)]</pattern_description>
         </Number_20of_20refinement_20cycles>
         <Tolerance>
-            <value>1e-15</value>
+            <value>1e-16</value>
             <default_value>0.000000001</default_value>
             <documentation>Tolerance of the solver</documentation>
             <pattern>12</pattern>
@@ -227,28 +227,28 @@
             <pattern_description>[Selection Jacobi|Boomer|BlockJacobi ]</pattern_description>
         </Eigenprecond>
         <postproscriptpath>
-            <value>postpro_h5py_v2.py</value>
+            <value>test_1/postpro_h5py_v2.py</value>
             <default_value>postpro_h5py_v1.py</default_value>
             <documentation>Path to the postprocessing script</documentation>
             <pattern>7</pattern>
             <pattern_description>[ANYTHING]</pattern_description>
         </postproscriptpath>
         <NewmarkBetaMethod_20Beta>
-            <value>0.26</value>
+            <value>0.25</value>
             <default_value>0.25</default_value>
             <documentation>Beta parameter of the Newmark method</documentation>
             <pattern>12</pattern>
             <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
         </NewmarkBetaMethod_20Beta>
         <NewmarkBetaMethod_20Gamma>
-            <value>0.51</value>
+            <value>0.5</value>
             <default_value>0.5</default_value>
             <documentation>Gamma parameter of the Newmark method</documentation>
             <pattern>12</pattern>
             <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
         </NewmarkBetaMethod_20Gamma>
         <DynamicMode>
-            <value>no</value>
+            <value>yes</value>
             <default_value>yes</default_value>
             <documentation>Will the dynamic mode be activated?</documentation>
             <pattern>7</pattern>
@@ -264,14 +264,14 @@
     </Solver>
     <Time>
         <End_20time>
-            <value>6</value>
+            <value>1</value>
             <default_value>1</default_value>
             <documentation>End time</documentation>
             <pattern>22</pattern>
             <pattern_description>[Double -MAX_DOUBLE...MAX_DOUBLE (inclusive)]</pattern_description>
         </End_20time>
         <Time_20step_20size>
-            <value>0.01</value>
+            <value>0.001</value>
             <default_value>0.1</default_value>
             <documentation>Time step size</documentation>
             <pattern>23</pattern>
