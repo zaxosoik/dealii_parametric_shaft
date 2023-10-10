@@ -1814,7 +1814,7 @@ for (unsigned int p = 0; p < n_points; ++p)
                     accell_angular.vector_value_list(fe_values.get_quadrature_points(), 
                                       accell_angular_values);
                     //if (timestep_no==1)
-                     cell_accel_rotation(i) = accell_angular_values[q_point](component_i);
+                     cell_accel_rotation(i) += accell_angular_values[q_point](component_i);
                   }
                 }
             }
@@ -2028,8 +2028,7 @@ for (unsigned int p = 0; p < n_points; ++p)
         velocity_n.compress(VectorOperation::add);
         acceleration_n.compress(VectorOperation::add);
         acceleration_n_prev.compress(VectorOperation::add);  
-        if (timestep_no>1)
-          acceleration_n.add(-1,acceleration_n_prev);
+  
         predictors();
 
         system_rhs.compress(VectorOperation::add);
