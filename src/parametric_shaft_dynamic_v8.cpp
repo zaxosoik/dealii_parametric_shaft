@@ -89,25 +89,25 @@
  
 #include <cstdlib> 
 
-namespace LA
-{
-#if defined(DEAL_II_WITH_PETSC) && !defined(DEAL_II_PETSC_WITH_COMPLEX) && \
-  !(defined(DEAL_II_WITH_TRILINOS) && defined(FORCE_USE_OF_TRILINOS))
-  using namespace dealii::LinearAlgebraPETSc;
-#  define USE_PETSC_LA
-#elif defined(DEAL_II_WITH_TRILINOS)
-  using namespace dealii::LinearAlgebraTrilinos;
-#else
-#  error DEAL_II_WITH_PETSC or DEAL_II_WITH_TRILINOS required
-#endif
-} // namespace LA
+//namespace LA
+//{
+//#if defined(DEAL_II_WITH_PETSC) && !defined(DEAL_II_PETSC_WITH_COMPLEX) && \
+//  !(defined(DEAL_II_WITH_TRILINOS) && defined(FORCE_USE_OF_TRILINOS))
+//  using namespace dealii::LinearAlgebraPETSc;
+//#  define USE_PETSC_LA
+//#elif defined(DEAL_II_WITH_TRILINOS)
+//  using namespace dealii::LinearAlgebraTrilinos;
+//#else
+//#  error DEAL_II_WITH_PETSC or DEAL_II_WITH_TRILINOS required
+//#endif
+//} // namespace LA
 
-
+using namespace dealii;
  const double pi = 3.14159265358979323846;
 const double rpm_to_rps = pi/30; // Conversion factor from RPM to RPS
 namespace ParametricShaft
 {
-  using namespace dealii;
+  
  
   namespace Parameters
   {
@@ -219,7 +219,11 @@ namespace ParametricShaft
       double bearing_x;
       double bearing_length;
       double bearing_diameter;
+      double eccentricity;
+      double bearing_phi;
+      double bearing_tol;
       double viscocity;
+
       double displacement;
       unsigned int direction;
 
@@ -246,10 +250,22 @@ namespace ParametricShaft
                           "1.05",
                           Patterns::Double(0.0),
                           "Diameter of the bearing");
+        prm.declare_entry ("Bearing Eccentricity",
+                          "0.0001",
+                          Patterns::Double(0.0),
+                          "Eccentricity of Bearing");
+        prm.declare_entry ("Bearing phi",
+                          "3.66519",
+                          Patterns::Double(0.0),
+                          "Angle of max eccentricity in rad");
         prm.declare_entry("Viscocity",
                           "0.001",
                           Patterns::Double(0.0),
                           "Viscocity of the bearing");
+        prm.declare_entry("Bearing tol",
+                          "0.0001",
+                          Patterns::Double(0.0),
+                          "Tolerance for solving the bearing");
         prm.declare_entry("Bearing Displacement",
                           "0.01",
                           Patterns::Double(0.0),
@@ -258,6 +274,7 @@ namespace ParametricShaft
                           "2",
                           Patterns::Selection("1|2|3"),
                           "Direction of the bearing Displacement");
+
 
       }
       prm.leave_subsection();
@@ -273,6 +290,9 @@ namespace ParametricShaft
         viscocity = prm.get_double("Viscocity");
         displacement = prm.get_double("Bearing Displacement");
         direction = prm.get_integer("Direction")-1;
+        eccentricity = prm.get_double("Bearing Eccentricity");
+        bearing_phi = prm.get_double("Bearing phi");
+        bearing_tol = prm.get_double("Bearing tol");
       }
       prm.leave_subsection();
     }
@@ -665,13 +685,14 @@ double get_von_Mises_stress(const SymmetricTensor<2, dim> &stress)
     
     // FOR ALL TIMESTEPS
     void assemble_system();
-    void assemble_bearing_rhs(const unsigned int bearing_boundary_id, const double eccentricity);
+    void assemble_bearing_rhs(const unsigned int bearing_boundary_id, const double eccentricity, const double phi);
     void predictors();
     void time_stepping();
  
     void solve_timestep();
  
     unsigned int solve_linear_problem();
+    void assemble_res_newton();
     void newton();
     void solve_modes(std::string solver_name, std::string preconditioner_name);
  
@@ -692,7 +713,7 @@ double get_von_Mises_stress(const SymmetricTensor<2, dim> &stress)
 
 
     Parameters::AllParameters prm;
-    
+    MPI_Comm mpi_communicator;
  
     parallel::shared::Triangulation<dim> triangulation;
 
@@ -725,6 +746,9 @@ double get_von_Mises_stress(const SymmetricTensor<2, dim> &stress)
     //PETScWrappers::MPI::SparseMatrix cell_stiffness_matrix;
     PETScWrappers::MPI::Vector system_rhs;
     PETScWrappers::MPI::Vector system_rhs_prev;
+    
+
+
     //Vector<double> displacement_n;
     //Vector<double> velocity_n;
     //Vector<double> acceleration_n;
@@ -736,9 +760,16 @@ double get_von_Mises_stress(const SymmetricTensor<2, dim> &stress)
     PETScWrappers::MPI::Vector displacement_n_prev;
     PETScWrappers::MPI::Vector newton_rhs;
     PETScWrappers::MPI::Vector newton_res;
+    PETScWrappers::MPI::Vector newton_res_prev;
+
     std::vector<PETScWrappers::MPI::Vector> eigenfunctions;
     std::vector<double>                eigenvalues;
     
+    PETScWrappers::MPI::Vector bearing_rhs;
+    PETScWrappers::MPI::Vector bearing_locally_relevant_solution;
+    PETScWrappers::MPI::SparseMatrix bearing_system_matrix;
+
+
     //AffineConstraints<double> constraints4modes;
     AffineConstraints<double> constraints_eigen;
 
@@ -755,7 +786,7 @@ double get_von_Mises_stress(const SymmetricTensor<2, dim> &stress)
 
 
     // FOR PARALLEL PROCESSING
-    MPI_Comm mpi_communicator;
+    
  
     const unsigned int n_mpi_processes;
  
@@ -1321,6 +1352,125 @@ for (unsigned int p = 0; p < n_points; ++p)
     DisplacementEngine<dim>::vector_value(points[p], value_list[p]);
 }
 
+
+template<int dim>
+class BearingSurfaceMove : public Function<dim>
+{
+public:
+    BearingSurfaceMove(const double bearing_radius, const double eccentricity , const double phi, const double displacement_increm, const int direction, const double delta_t);
+
+    virtual void h_vector_value(const Point<dim> &p,
+                            Vector<double> &values_h) const ;
+    virtual void 
+    h_vector_value_list(const std::vector<Point<dim>> &points,
+                    std::vector<Vector<double>> &  value_h_list) const ;
+    
+    virtual void h_dot_vector_value(const Point<dim> &p,
+                            Vector<double> &values_h_dot) const ;
+    virtual void 
+    h_dot_vector_value_list(const std::vector<Point<dim>> &points,
+                    std::vector<Vector<double>> &  value_h_dot_list) const ;
+    
+private:
+    const double bearing_radius; 
+    const double eccentricity;
+    const double phi;
+    const double displacement_increm;
+    const int direction;
+    const double delta_t;
+   
+    
+};
+
+template <int dim>
+BearingSurfaceMove<dim>::BearingSurfaceMove(const double bearing_radius, const double eccentricity, const double phi, const double displacement_increm, const int direction, const double delta_t)
+: Function<dim>(dim), bearing_radius(bearing_radius), eccentricity(eccentricity), phi(phi), displacement_increm(displacement_increm), direction(direction), delta_t(delta_t)
+{}
+
+template <int dim>
+void BearingSurfaceMove<dim>::h_vector_value(const Point<dim> &p,
+                                            Vector<double> &values_h) const
+{
+//AssertDimension(values.size(), dim);
+ double y = p(1);
+    double z = p(2);
+    double xb = p(0);
+    double yb = eccentricity*cos(phi);
+    double zb = eccentricity*sin(phi);
+    double y_dot = 0;
+    double z_dot = 0;
+    if (direction ==1)
+    {
+        yb = yb + displacement_increm;
+        y_dot = displacement_increm/delta_t;
+
+    }
+    else if (direction ==2)
+    {
+        zb = zb + displacement_increm;
+        z_dot = displacement_increm/delta_t;
+    }
+
+    double x = xb;
+    double ins_sqrt = pow((y-yb),2)+pow((z-zb),2);
+   
+  values_h = sqrt(ins_sqrt)-bearing_radius; //h
+}
+template <int dim>
+void BearingSurfaceMove<dim>::h_dot_vector_value(const Point<dim> &p,
+                                            Vector<double> &values_h_dot) const
+{
+   double y = p(1);
+    double z = p(2);
+    double xb = p(0);
+    double yb = eccentricity*cos(phi);
+    double zb = eccentricity*sin(phi);
+    double y_dot = 0;
+    double z_dot = 0;
+    if (direction ==1)
+    {
+        yb = yb + displacement_increm;
+        y_dot = displacement_increm/delta_t;
+
+    }
+    else if (direction ==2)
+    {
+        zb = zb + displacement_increm;
+        z_dot = displacement_increm/delta_t;
+    }
+
+    double x = xb;
+    double ins_sqrt = pow((y-yb),2)+pow((z-zb),2);
+    double ins_sqrt_dot = -2*y_dot-2*z_dot;
+    values_h_dot = pow((ins_sqrt),(-1/2))*(ins_sqrt_dot); //h_dot
+
+}
+
+template <int dim>
+ void BearingSurfaceMove<dim>::h_vector_value_list(
+const std::vector<Point<dim>> &points,
+std::vector<Vector<double>> &  value_h_list) const
+{
+const unsigned int n_points = points.size();
+
+AssertDimension(value_h_list.size(), n_points);
+
+for (unsigned int p = 0; p < n_points; ++p)
+    BearingSurfaceMove<dim>::h_vector_value(points[p], value_h_list[p]);
+}
+
+template <int dim>
+ void BearingSurfaceMove<dim>::h_dot_vector_value_list(
+const std::vector<Point<dim>> &points,
+std::vector<Vector<double>> &  value_h_dot_list) const
+{
+const unsigned int n_points = points.size();
+
+AssertDimension(value_h_dot_list.size(), n_points);
+
+for (unsigned int p = 0; p < n_points; ++p)
+    BearingSurfaceMove<dim>::h_dot_vector_value(points[p], value_h_dot_list[p]);
+}
 //template <int dim>
 //class SolveBearing : public Function<dim>
 //  {
@@ -1400,6 +1550,9 @@ for (unsigned int p = 0; p < n_points; ++p)
   template <int dim>
   TopLevel<dim>::TopLevel(const std::string &input_file)
     : prm(input_file)
+    , mpi_communicator(MPI_COMM_WORLD)
+    , n_mpi_processes(Utilities::MPI::n_mpi_processes(mpi_communicator))
+    , this_mpi_process(Utilities::MPI::this_mpi_process(mpi_communicator))
     , triangulation(MPI_COMM_WORLD/*,
                     typename Triangulation<dim>::MeshSmoothing(
                         Triangulation<dim>::smoothing_on_refinement |
@@ -1413,9 +1566,7 @@ for (unsigned int p = 0; p < n_points; ++p)
     , present_timestep(prm.delta_t)
     , end_time(prm.end_time)
     , timestep_no(0)
-    , mpi_communicator(MPI_COMM_WORLD)
-    , n_mpi_processes(Utilities::MPI::n_mpi_processes(mpi_communicator))
-    , this_mpi_process(Utilities::MPI::this_mpi_process(mpi_communicator))
+
     , pcout(std::cout,
               (Utilities::MPI::this_mpi_process(mpi_communicator) == 0))
     , computing_timer(mpi_communicator,
@@ -1538,10 +1689,10 @@ for (unsigned int p = 0; p < n_points; ++p)
     std::vector<dealii::IndexSet> locally_owned_dofs_per_processor =
         DoFTools::locally_owned_dofs_per_subdomain(dof_handler);
 
-    locally_owned_dofs = locally_owned_dofs_per_processor[this_mpi_process];
+    locally_owned_dofs = dof_handler.locally_owned_dofs(); //locally_owned_dofs_per_processor[this_mpi_process];
 
-    locally_relevant_dofs.clear();
-    DoFTools::extract_locally_relevant_dofs(dof_handler, locally_relevant_dofs);
+    locally_relevant_dofs = 
+           DoFTools::extract_locally_relevant_dofs(dof_handler); //, locally_relevant_dofs);
     
     
    { TimerOutput::Scope t(computing_timer, "Setup: constraints");}
@@ -1571,7 +1722,7 @@ for (unsigned int p = 0; p < n_points; ++p)
 
 
     SparsityTools::distribute_sparsity_pattern(sparsity_pattern,
-                                                n_locally_owned_dofs,
+                                                dof_handler.locally_owned_dofs(),
                                                mpi_communicator,
                                                locally_relevant_dofs);
     
@@ -1599,23 +1750,41 @@ for (unsigned int p = 0; p < n_points; ++p)
                           locally_owned_dofs,
                           sparsity_pattern,
                           mpi_communicator);
+    bearing_system_matrix.reinit(locally_owned_dofs,
+                          locally_owned_dofs,
+                          sparsity_pattern,
+                          mpi_communicator);
+    bearing_rhs.reinit(locally_owned_dofs, mpi_communicator);
+
     
     system_rhs.reinit(locally_owned_dofs, mpi_communicator);
     system_rhs_prev.reinit(locally_owned_dofs, mpi_communicator);
+
     //locally_relevant_solution.reinit(locally_owned_dofs, mpi_communicator);
+
     displacement_n.reinit(locally_owned_dofs, mpi_communicator);
     velocity_n.reinit(locally_owned_dofs, mpi_communicator);
     acceleration_n.reinit(locally_owned_dofs, mpi_communicator);
+
     acceleration_n_prev.reinit(locally_owned_dofs, mpi_communicator);
     velocity_n_prev.reinit(locally_owned_dofs, mpi_communicator);
     displacement_n_prev.reinit(locally_owned_dofs, mpi_communicator);
+
     newton_rhs.reinit(locally_owned_dofs, mpi_communicator);
+
     newton_res.reinit(locally_owned_dofs, mpi_communicator);
+    newton_res_prev.reinit(locally_owned_dofs, mpi_communicator);
+
+
+    
 
     locally_relevant_solution.reinit(locally_owned_dofs,
                                        locally_relevant_dofs,
                                        mpi_communicator);
 
+    bearing_locally_relevant_solution.reinit(locally_owned_dofs,
+                                       locally_relevant_dofs,
+                                       mpi_communicator);
 
     //locally_relevant_solution.reinit(dof_handler.n_dofs());
     //                      mpi_communicator);
@@ -1731,6 +1900,7 @@ for (unsigned int p = 0; p < n_points; ++p)
     FullMatrix<double> cell_stiffness_matrix(dofs_per_cell, dofs_per_cell);
     FullMatrix<double> cell_damping_matrix(dofs_per_cell, dofs_per_cell);
     Vector<double>     cell_rhs(dofs_per_cell);
+    Vector<double>     cell_res(dofs_per_cell);
 
     Vector<double>     cell_displacement(dofs_per_cell);
     Vector<double>     cell_velocity(dofs_per_cell);
@@ -1902,6 +2072,7 @@ for (unsigned int p = 0; p < n_points; ++p)
           fe_values.reinit(cell);
           cell_matrix = 0;
           cell_rhs    = 0;
+          cell_res    = 0;
 
           cell_stiffness_matrix = 0;
           cell_mass_matrix      = 0;
@@ -1967,23 +2138,25 @@ for (unsigned int p = 0; p < n_points; ++p)
                     
                   const SymmetricTensor<2, dim> &old_stress =
                     local_quadrature_points_data[q_point].old_stress;
-                    if (prm.dynamicmode)
-                      cell_rhs(i) +=
-                          (body_force_values[q_point](component_i)/*-old_stress * get_strain(fe_values, i, q_point)*/) *
-                          fe_values.shape_value(i, q_point)  *
-                          fe_values.JxW(q_point);
-                    else
-                      cell_rhs(i) +=
-                        (body_force_values[q_point](component_i)*fe_values.shape_value(i, q_point)
-                        -old_stress * get_strain(fe_values, i, q_point)) *
-                        fe_values.JxW(q_point);
+                      cell_res(i) += -old_stress * get_strain(fe_values, i, q_point);
+                      if (prm.dynamicmode)
+                        cell_rhs(i) +=
+                            (body_force_values[q_point](component_i)*fe_values.shape_value(i, q_point) 
+                            )
+                            * fe_values.JxW(q_point);
+                      else
+                         cell_rhs(i) +=
+                            (body_force_values[q_point](component_i)*fe_values.shape_value(i, q_point) 
+                            +cell_res(i))
+                            * fe_values.JxW(q_point);
+
                     if (timestep_no==1)
                      {
                         cell_velocity(i)     += fe_values.shape_value(i, q_point) *velocity_angular_values[q_point](component_i)    *fe_values.JxW(q_point);
                         cell_accel(i)        += fe_values.shape_value(i, q_point) *acceleration_angular_values[q_point](component_i)*fe_values.JxW(q_point);
                         
                         //if (timestep_no>1)
-                        cell_displacement(i) += fe_values.shape_value(i, q_point) *displacement_engine_values[q_point](component_i) *fe_values.JxW(q_point);
+                        //cell_displacement(i) += fe_values.shape_value(i, q_point) *displacement_engine_values[q_point](component_i) *fe_values.JxW(q_point);
                     }
 
                 }
@@ -2060,32 +2233,32 @@ for (unsigned int p = 0; p < n_points; ++p)
                                   }
                                 }
                    }
-                else if (cell->face(face)->boundary_id() == 3 && prm.dynamicmode )
-                                {
-
-                                      dynamicincrementalvalues_bearing1.vector_value_list_displacement(fe_values.get_quadrature_points(), 
-                                                                  dynamicincremental_displacement_bearing1);
-                                      dynamicincrementalvalues_bearing1.vector_value_list_velocity(fe_values.get_quadrature_points(), 
-                                                                  dynamicincremental_velocity_bearing1);
-
-                                      for (unsigned int q_point = 0; q_point < n_q_points; ++q_point)
-                                            {
-                                              Tensor<1, dim> vel_rhs_values;
-                                              Tensor<1, dim> disp_rhs_values;
-                                              for (unsigned int i = 0; i < dim; ++i)
-                                                {
-                                                  vel_rhs_values[i] =  dynamicincremental_velocity_bearing1[q_point](i);
-                                                  disp_rhs_values[i] =  dynamicincremental_displacement_bearing1[q_point](i);
-                                                }
-                                              for (unsigned int i = 0; i < dofs_per_cell; ++i)            
-                                                {
-                                              
-                                                  cell_displacement(i) +=  fe_face_values[displacement].value(i, q_point)*disp_rhs_values*fe_face_values.JxW(q_point);
-                                                  cell_velocity(i) += fe_face_values[displacement].value(i, q_point)*vel_rhs_values*fe_face_values.JxW(q_point);
-                                                }
-                                             }
-                                 }
-         
+                //else if (cell->face(face)->boundary_id() == 3 && prm.dynamicmode )
+                //                {
+//
+                //                      dynamicincrementalvalues_bearing1.vector_value_list_displacement(fe_values.get_quadrature_points(), 
+                //                                                  dynamicincremental_displacement_bearing1);
+                //                      dynamicincrementalvalues_bearing1.vector_value_list_velocity(fe_values.get_quadrature_points(), 
+                //                                                  dynamicincremental_velocity_bearing1);
+//
+                //                      for (unsigned int q_point = 0; q_point < n_q_points; ++q_point)
+                //                            {
+                //                              Tensor<1, dim> vel_rhs_values;
+                //                              Tensor<1, dim> disp_rhs_values;
+                //                              for (unsigned int i = 0; i < dim; ++i)
+                //                                {
+                //                                  vel_rhs_values[i] =  dynamicincremental_velocity_bearing1[q_point](i);
+                //                                  disp_rhs_values[i] =  dynamicincremental_displacement_bearing1[q_point](i);
+                //                                }
+                //                              for (unsigned int i = 0; i < dofs_per_cell; ++i)            
+                //                                {
+                //                              
+                //                                  cell_displacement(i) +=  fe_face_values[displacement].value(i, q_point)*disp_rhs_values*fe_face_values.JxW(q_point);
+                //                                  cell_velocity(i) += fe_face_values[displacement].value(i, q_point)*vel_rhs_values*fe_face_values.JxW(q_point);
+                //                                }
+                //                             }
+                //                 }
+         //
                     //else if (cell->face(face)->boundary_id() != 0 && prm.dynamicmode)
                 
               }
@@ -2133,9 +2306,11 @@ for (unsigned int p = 0; p < n_points; ++p)
             constraints_dirichlet_and_hanging_nodes.distribute_local_to_global(cell_accel_rotation,
                                                 local_dof_indices,
                                                 acceleration_n);
-            constraints_dirichlet_and_hanging_nodes.distribute_local_to_global(cell_accel_rotation,
+            constraints_dirichlet_and_hanging_nodes.distribute_local_to_global(cell_res,
                                                 local_dof_indices,
-                                                acceleration_n_prev);
+                                                newton_res);
+
+                                    
           //}
 //
         //std::cout << "Hanging Nodes Matrices Constructed for MPI Process" << this_mpi_process << std::endl;  
@@ -2177,8 +2352,15 @@ for (unsigned int p = 0; p < n_points; ++p)
     PETScWrappers::MPI::Vector tmp(locally_owned_dofs, mpi_communicator);
 
     pcout << "    Boundaries initialised for  " << this_mpi_process <<" process done." <<std::endl;
-    assemble_bearing_rhs(3,0);
+    assemble_bearing_rhs(3,prm.eccentricity,prm.bearing_phi);
     pcout << "    Bearing Boundaries initialised." <<std::endl;
+    PETScWrappers::MPI::Vector tmp_rhs(locally_owned_dofs, mpi_communicator);
+    tmp_rhs = bearing_locally_relevant_solution;
+    tmp_rhs.compress(VectorOperation::add);
+    system_rhs.compress(VectorOperation::add);
+    system_rhs.add(1,tmp_rhs);
+    pcout << "    Bearing Boundaries added." <<std::endl; 
+
 
     if (prm.dynamicmode)
     {
@@ -2197,12 +2379,12 @@ for (unsigned int p = 0; p < n_points; ++p)
         //  boundary_values, system_matrix, tmp, displacement_n, false);
         //MatrixTools::apply_boundary_values(
         //  boundary_values, system_damping_matrix, tmp, velocity_n, false);  
-        displacement_n*=(-1);
-        velocity_n*=(-1);        
-        system_matrix.vmult_add(system_rhs,displacement_n);
-        system_damping_matrix.vmult_add(system_rhs,velocity_n);
-        displacement_n*=(-1);
-        velocity_n*=(-1);
+        //    displacement_n*=(-1);
+        //    velocity_n*=(-1);        
+        //    system_matrix.vmult_add(system_rhs,displacement_n);
+        //    system_damping_matrix.vmult_add(system_rhs,velocity_n);
+        //    displacement_n*=(-1);
+        //    velocity_n*=(-1);
         
         //system_matrix*=prm.beta*prm.delta_t*prm.delta_t;
         //system_matrix.add(1,system_mass_matrix);
@@ -2234,11 +2416,11 @@ for (unsigned int p = 0; p < n_points; ++p)
                                              0,
                                              AccellerationAngularBoundary<dim>(rpm_to_rps*prm.rpm),
                                             boundary_values_dynamic);    
-        //VectorTools::interpolate_boundary_values(dof_handler,
-        //                                      0,
-        //                                      Functions::ZeroFunction<dim>(dim),
-        //                                      boundary_values,
-        //                                      fe.component_mask(x_component));                                      
+        VectorTools::interpolate_boundary_values(dof_handler,
+                                              0,
+                                              Functions::ZeroFunction<dim>(0),
+                                              boundary_values,
+                                              fe.component_mask(x_component));                                      
         MatrixTools::apply_boundary_values(
          boundary_values, system_dynamic_matrix, tmp, system_rhs, false);
         locally_relevant_solution = tmp;
@@ -2274,9 +2456,10 @@ for (unsigned int p = 0; p < n_points; ++p)
   
   template <int dim>
   void TopLevel<dim>::assemble_bearing_rhs(const unsigned int bearing_boundary_id, 
-                                          const double eccentricity)
+                                          const double eccentricity, const double phi)
   {
-    
+    {
+     TimerOutput::Scope t(computing_timer, "Assembling Bearing");
     //std::vector<types::global_dof_index> face_dof_indices(fe.dofs_per_face);
     ////////////////////////////////
     //const IndexSet boundary_dof_set = DoFTools::extract_boundary_dofs(dof_handler,
@@ -2312,36 +2495,36 @@ for (unsigned int p = 0; p < n_points; ++p)
     //}
 
 
-    PETScWrappers::MPI::Vector bearing_rhs;
-    PETScWrappers::MPI::Vector bearing_locally_relevant_solution;
-    PETScWrappers::MPI::SparseMatrix bearing_system_matrix;
+    //PETScWrappers::MPI::Vector bearing_rhs;
+    //PETScWrappers::MPI::Vector bearing_locally_relevant_solution;
+    //PETScWrappers::MPI::SparseMatrix bearing_system_matrix;
 
-    DynamicSparsityPattern sparsity_pattern(locally_relevant_dofs);
-    DoFTools::make_sparsity_pattern(dof_handler,
-                                    sparsity_pattern,
-                                    constraints_dirichlet_and_hanging_nodes,
-                                    /*keep constrained dofs*/ false);
-    std::vector<dealii::IndexSet> locally_owned_dofs_per_processor =
-    DoFTools::locally_owned_dofs_per_subdomain(dof_handler);
-    std::vector<dealii::types::global_dof_index> n_locally_owned_dofs(n_mpi_processes);
-
-    for (unsigned int i = 0; i < n_mpi_processes; ++i)
-      n_locally_owned_dofs[i] = locally_owned_dofs_per_processor[i].n_elements();
-    SparsityTools::distribute_sparsity_pattern(sparsity_pattern,
-                                                n_locally_owned_dofs,
-                                               mpi_communicator,
-                                               locally_relevant_dofs);
-    bearing_system_matrix.reinit(locally_owned_dofs,
-                          locally_owned_dofs,
-                          sparsity_pattern,
-                          mpi_communicator);
-
-          
-    bearing_rhs.reinit(locally_owned_dofs, mpi_communicator);
-    bearing_locally_relevant_solution.reinit(locally_owned_dofs,
-                                      locally_relevant_dofs,
-                                      mpi_communicator);                             
-    
+    //DynamicSparsityPattern sparsity_pattern(locally_relevant_dofs);
+    //DoFTools::make_sparsity_pattern(dof_handler,
+    //                                sparsity_pattern,
+    //                                constraints_dirichlet_and_hanging_nodes,
+    //                                /*keep constrained dofs*/ false);
+    //std::vector<dealii::IndexSet> locally_owned_dofs_per_processor =
+    //DoFTools::locally_owned_dofs_per_subdomain(dof_handler);
+    //std::vector<dealii::types::global_dof_index> n_locally_owned_dofs(n_mpi_processes);
+//
+    //for (unsigned int i = 0; i < n_mpi_processes; ++i)
+    //  n_locally_owned_dofs[i] = locally_owned_dofs_per_processor[i].n_elements();
+    //SparsityTools::distribute_sparsity_pattern(sparsity_pattern,
+    //                                            dof_handler.locally_owned_dofs(),
+    //                                           mpi_communicator,
+    //                                           locally_relevant_dofs);
+    //bearing_system_matrix.reinit(locally_owned_dofs,
+    //                      locally_owned_dofs,
+    //                      sparsity_pattern,
+    //                      mpi_communicator);
+//
+    //      
+    //bearing_rhs.reinit(locally_owned_dofs, mpi_communicator);
+    //bearing_locally_relevant_solution.reinit(locally_owned_dofs,
+    //                                  locally_relevant_dofs,
+    //                                  mpi_communicator);                             
+    //
     /*bearing_rhs.reinit(boundary_dof_set,mpi_communicator);
     bearing_locally_relevant_solution.reinit(boundary_dof_set,mpi_communicator);
 
@@ -2374,8 +2557,20 @@ for (unsigned int p = 0; p < n_points; ++p)
     typename dealii::DoFHandler<dim>::active_cell_iterator
           cell = dof_handler.begin_active(),
           endc = dof_handler.end();
-    for (; cell != endc; ++cell)
-      if (cell->subdomain_id() == this_mpi_process)      
+    FullMatrix<double> cell_matrix(dofs_per_cell, dofs_per_cell);
+    Vector<double>     cell_rhs(dofs_per_cell);
+    
+    double disp_increm = prm.displacement/prm.end_time*present_timestep;
+    BearingSurfaceMove<dim> h(prm.bearing_diameter/2, eccentricity, phi,disp_increm,prm.direction,prm.delta_t);  
+    std::vector<Vector<double>> h_values(n_q_points,Vector<double>(1));
+    std::vector<Vector<double>> h_dot_values(n_q_points,Vector<double>(1));
+   
+    VelocityAngular<dim> velocity_angular(prm.rpm*rpm_to_rps); 
+    std::vector<Vector<double>> velocity_angular_values(n_q_points,
+                                                                  Vector<double>(dim));
+    const FEValuesExtractors::Vector displacement(0);
+    for (const auto &cell : dof_handler.active_cell_iterators())
+      if (cell->is_locally_owned())
       {
           fe_values.reinit(cell);
           cell_matrix = 0;
@@ -2385,12 +2580,86 @@ for (unsigned int p = 0; p < n_points; ++p)
               fe_face_values.reinit(cell, face);
               //fe_values.reinit(cell);
               //if (faces_touched[])
+              h.h_vector_value_list(fe_values.get_quadrature_points(), 
+                                                  h_values);
+              h.h_dot_vector_value_list(fe_values.get_quadrature_points(),
+                                                  h_dot_values);
+
+
+              velocity_angular.vector_value_list(fe_values.get_quadrature_points(), 
+                                  velocity_angular_values);
               if (cell->face(face)->at_boundary() && (cell->face(face)->boundary_id() == 1))
-                for (unsigned int i = 0; i < dofs_per_cell; ++i)
-                  for (unsigned int j = 0; j < dofs_per_cell; ++j)
-                      for (unsigned int q_point = 0; q_point < n_q_points; ++q_point)
-                    
+                {
+
+                  
+                for (unsigned int q_point = 0; q_point < n_q_points; ++q_point)
+                {
+
+                  for (unsigned int i = 0; i < dofs_per_cell; ++i)
+                    {
+                      const unsigned int component_i =
+                            fe.system_to_component_index(i).first;
+                      const SymmetricTensor<2, dim>
+                            eps_phi_i = get_strain(fe_values, i, q_point);
+                      Tensor<1, dim> rhs_values; // = (eps_phi_i)*velocity_angular_values[q_point];
+                      
+                      for (unsigned int i = 0; i < dim; ++i)
+                      {
+                        rhs_values[i] = eps_phi_i[q_point][i]*velocity_angular_values[q_point][i];
+                      }
+                      for (unsigned int j = 0; j < dofs_per_cell; ++j)
+                      {
+                          const SymmetricTensor<2, dim>
+                            //eps_phi_i = get_strain(fe_values, i, q_point),
+                            eps_phi_j = get_strain(fe_values, j, q_point);
+                          cell_matrix(i, j) += (pow(h_values[q_point](0),3)/(12*prm.viscocity*1e-6))*(transpose(eps_phi_i) *            
+                                                eps_phi_j              
+                                                ) *                    
+                                              fe_values.JxW(q_point);
+                      }
+                      
+                      //cell_rhs(i) += (fe_face_values[displacement].value(i, q_point)) *h_values[q_point](0)*rhs_values[i] * fe_face_values.JxW(q_point)/2;
+                      //cell_rhs(i) -= (fe_face_values[displacement].value(i, q_point)) *h_dot_values[q_point](0)* fe_face_values.JxW(q_point);
+                      cell_rhs(i) += (fe_values.shape_value(i, q_point) ) *h_values[q_point](0)*rhs_values[i] * fe_values.JxW(q_point)/2;
+                      cell_rhs(i) -= (fe_values.shape_value(i, q_point) ) *h_dot_values[q_point](0)* fe_values.JxW(q_point);
+                    }
+                }
+                
+                //break;                
+                }
+          }
+          cell->get_dof_indices(local_dof_indices);
+          constraints_dirichlet_and_hanging_nodes.distribute_local_to_global(cell_matrix,
+                                                              cell_rhs,
+                                                              local_dof_indices,
+                                                              bearing_system_matrix,
+                                                              bearing_rhs);
       }
+    bearing_system_matrix.compress(VectorOperation::add);
+    bearing_rhs.compress(VectorOperation::add);
+    }
+    pcout << "Cell Matrices Constructed for bearing with boundary_id:"<< bearing_boundary_id << std::endl;
+    
+    {
+      TimerOutput::Scope t(computing_timer, "Solving Bearing");
+      PETScWrappers::MPI::Vector distributed_locally_relevant_solution(
+                    locally_owned_dofs, mpi_communicator);
+      //distributed_locally_relevant_solution = 0;
+      PETScWrappers::PreconditionBoomerAMG::AdditionalData data;
+      //data.symmetric_operator = true;
+
+      SolverControl solver_control(dof_handler.n_dofs(), prm.bearing_tol* bearing_rhs.l2_norm()*1000);
+
+      PETScWrappers::SolverCG cg(solver_control, mpi_communicator);
+      PETScWrappers::PreconditionBoomerAMG preconditioner;
+      preconditioner.initialize(bearing_system_matrix, data);
+      cg.solve(bearing_system_matrix, distributed_locally_relevant_solution, bearing_rhs, preconditioner);
+      pcout << "Bearing System Solved for bearing:"<< bearing_boundary_id <<" in "<<solver_control.last_step()<<" iterations"<< std::endl;
+      constraints_dirichlet_and_hanging_nodes.distribute(distributed_locally_relevant_solution);
+      bearing_locally_relevant_solution = distributed_locally_relevant_solution;
+    }
+    
+       
 
   }
 
@@ -2442,6 +2711,15 @@ for (unsigned int p = 0; p < n_points; ++p)
         
 
   }
+
+
+  template <int dim>
+  void TopLevel<dim>::assemble_res_newton()
+  {
+    ///////
+    
+
+  }
   template <int dim>
   void TopLevel<dim>::newton()
   {
@@ -2464,6 +2742,7 @@ for (unsigned int p = 0; p < n_points; ++p)
               acceleration_n_prev = 0;
               velocity_n_prev = 0;
               displacement_n_prev = 0;
+              newton_res_prev = 0;
             }
         else
             {
@@ -2572,9 +2851,9 @@ for (unsigned int p = 0; p < n_points; ++p)
           //         system_rhs,
           //         preconditioner);
             acceleration_n = distributed_locally_relevant_solution;
+            
+            constraints_dirichlet_and_hanging_nodes.distribute(distributed_locally_relevant_solution);
             locally_relevant_solution = distributed_locally_relevant_solution;
-            constraints_dirichlet_and_hanging_nodes.distribute(locally_relevant_solution);
-
             pcout << "    Timestepping " << std::endl;
 
           time_stepping();
@@ -2595,8 +2874,9 @@ for (unsigned int p = 0; p < n_points; ++p)
           //       distributed_locally_relevant_solution,
           //       system_rhs,
           //       preconditioner);
+         
+          constraints_dirichlet_and_hanging_nodes.distribute(distributed_locally_relevant_solution);
           locally_relevant_solution = distributed_locally_relevant_solution;
-          constraints_dirichlet_and_hanging_nodes.distribute(locally_relevant_solution);
     }
  
 
@@ -3263,7 +3543,7 @@ int main(int argc, char **argv)
 {
   try
     {
-      //using namespace dealii;
+      using namespace dealii;
       using namespace ParametricShaft;
  
       Utilities::MPI::MPI_InitFinalize mpi_initialization(argc, argv, 1);

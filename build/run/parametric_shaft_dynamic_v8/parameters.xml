@@ -9,12 +9,26 @@
             <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
         </Bearing_20x>
         <Diameter_20Bearing>
-            <value>1</value>
+            <value>0.801</value>
             <default_value>1.05</default_value>
             <documentation>Diameter of the bearing</documentation>
             <pattern>10</pattern>
             <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
         </Diameter_20Bearing>
+        <Bearing_20Eccentricity>
+            <value>0.0001</value>
+            <default_value>0.0001</default_value>
+            <documentation>Eccentricity of Bearing</documentation>
+            <pattern>8</pattern>
+            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+        </Bearing_20Eccentricity>
+        <Bearing_20phi>
+            <value>3.66519</value>
+            <default_value>3.66519</default_value>
+            <documentation>Angle of max eccentricity in rad</documentation>
+            <pattern>8</pattern>
+            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+        </Bearing_20phi>
         <Length_20of_20the_20Bearing>
             <value>0.5</value>
             <default_value>1.0</default_value>
@@ -25,10 +39,17 @@
         <Viscocity>
             <value>0.01</value>
             <default_value>0.001</default_value>
-            <documentation>Viscocity of the bearing</documentation>
+            <documentation>Viscocity of the bearing in cSt</documentation>
             <pattern>11</pattern>
             <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
         </Viscocity>
+        <Bearing_20tol>
+            <value>1e-4</value>
+            <default_value>1e-6</default_value>
+            <documentation>Tolerance for solving the bearing</documentation>
+            <pattern>8</pattern>
+            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+        </Bearing_20tol>
         <bearings>
             <value>1</value>
             <default_value>1</default_value>
@@ -37,7 +58,7 @@
             <pattern_description>[Integer range 1...2147483647 (inclusive)]</pattern_description>
         </bearings>
         <Bearing_20Displacement>
-            <value>0.5</value>
+            <value>0</value>
             <default_value>0.01</default_value>
             <documentation>Displacement of the bearing</documentation>
             <pattern>12</pattern>
@@ -97,7 +118,7 @@
             <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
         </Half_20length>
         <Partitions>
-            <value>100</value>
+            <value>400</value>
             <default_value>10</default_value>
             <documentation>Number of partitions</documentation>
             <pattern>2</pattern>
@@ -185,14 +206,14 @@
             <pattern_description>[Integer range 1...232147483647 (inclusive)]</pattern_description>
         </Max_20iterations>
         <Number_20of_20refinement_20cycles>
-            <value>2</value>
+            <value>1</value>
             <default_value>5</default_value>
             <documentation>Number of refinement cycles</documentation>
             <pattern>14</pattern>
             <pattern_description>[Integer range 1...2147483647 (inclusive)]</pattern_description>
         </Number_20of_20refinement_20cycles>
         <Tolerance>
-            <value>1e-16</value>
+            <value>1e-14</value>
             <default_value>0.000000001</default_value>
             <documentation>Tolerance of the solver</documentation>
             <pattern>12</pattern>
@@ -248,7 +269,7 @@
             <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
         </NewmarkBetaMethod_20Gamma>
         <DynamicMode>
-            <value>no</value>
+            <value>yes</value>
             <default_value>yes</default_value>
             <documentation>Will the dynamic mode be activated?</documentation>
             <pattern>7</pattern>
@@ -271,7 +292,7 @@
             <pattern_description>[Double -MAX_DOUBLE...MAX_DOUBLE (inclusive)]</pattern_description>
         </End_20time>
         <Time_20step_20size>
-            <value>0.5</value>
+            <value>0.01</value>
             <default_value>0.1</default_value>
             <documentation>Time step size</documentation>
             <pattern>23</pattern>
