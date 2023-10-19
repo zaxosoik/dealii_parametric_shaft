@@ -2,49 +2,56 @@
 <ParameterHandler>
     <Bearings>
         <Bearing_20x>
-            <value>0</value>
+            <value>2</value>
             <default_value>0.5</default_value>
             <documentation>x coordinate of the bearing</documentation>
             <pattern>8</pattern>
             <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
         </Bearing_20x>
+        <Journal_20bearings_20distance>
+            <value>2</value>
+            <default_value>0.5</default_value>
+            <documentation>Journal bearings distance</documentation>
+            <pattern>8</pattern>
+            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+        </Journal_20bearings_20distance>
         <Diameter_20Bearing>
-            <value>0.801</value>
+            <value>0.8009</value>
             <default_value>1.05</default_value>
             <documentation>Diameter of the bearing</documentation>
             <pattern>10</pattern>
             <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
         </Diameter_20Bearing>
         <Bearing_20Eccentricity>
-            <value>0.0001</value>
+            <value>0</value>
             <default_value>0.0001</default_value>
             <documentation>Eccentricity of Bearing</documentation>
             <pattern>8</pattern>
             <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
         </Bearing_20Eccentricity>
         <Bearing_20phi>
-            <value>3.66519</value>
+            <value>5</value>
             <default_value>3.66519</default_value>
             <documentation>Angle of max eccentricity in rad</documentation>
             <pattern>8</pattern>
             <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
         </Bearing_20phi>
         <Length_20of_20the_20Bearing>
-            <value>0.5</value>
+            <value>0.6</value>
             <default_value>1.0</default_value>
             <documentation>Length of the bearing</documentation>
             <pattern>9</pattern>
             <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
         </Length_20of_20the_20Bearing>
         <Viscocity>
-            <value>0.01</value>
+            <value>385</value>
             <default_value>0.001</default_value>
             <documentation>Viscocity of the bearing in cSt</documentation>
             <pattern>11</pattern>
             <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
         </Viscocity>
         <Bearing_20tol>
-            <value>1e-4</value>
+            <value>1e-1</value>
             <default_value>1e-6</default_value>
             <documentation>Tolerance for solving the bearing</documentation>
             <pattern>8</pattern>
@@ -71,10 +78,73 @@
             <pattern>7</pattern>
             <pattern_description>[Selection 1|2|3 ]</pattern_description>
         </Direction>
+        <Tail_20Bearing_20Length>
+            <value>1</value>
+            <default_value>1.0</default_value>
+            <documentation>Length of the tail bearing</documentation>
+            <pattern>17</pattern>
+            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+        </Tail_20Bearing_20Length>
+        <Tail_20Bearing_20Diameter>
+            <value>0.8009</value>
+            <default_value>1.05</default_value>
+            <documentation>Diameter of the Tail Bearing</documentation>
+            <pattern>17</pattern>
+            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+        </Tail_20Bearing_20Diameter>
+        <Tail_20Bearing_20Distance_20from_20End>
+            <value>3</value>
+            <default_value>0.2</default_value>
+            <documentation>Distance from the end side of the shaft</documentation>
+            <pattern>17</pattern>
+            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+        </Tail_20Bearing_20Distance_20from_20End>
+        <Stern_20Tube_20Bearing_20Length>
+            <value>1.05</value>
+            <default_value>1.0</default_value>
+            <documentation>Length of the Stern Tube bearing</documentation>
+            <pattern>17</pattern>
+            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+        </Stern_20Tube_20Bearing_20Length>
+        <Stern_20Tube_20Bearing_20Diameter>
+            <value>0.8009</value>
+            <default_value>1.05</default_value>
+            <documentation>Diameter of the Tail Bearing</documentation>
+            <pattern>17</pattern>
+            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+        </Stern_20Tube_20Bearing_20Diameter>
+        <Stern_20Tube_20Bearing_20Distance_20from_20End>
+            <value>0.2</value>
+            <default_value>0.2</default_value>
+            <documentation>Distance from the end side of the shaft</documentation>
+            <pattern>17</pattern>
+            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+        </Stern_20Tube_20Bearing_20Distance_20from_20End>
+        <Thrust_20Bearing_20Length>
+            <value>0.4</value>
+            <default_value>1.0</default_value>
+            <documentation>Length of the Thrust bearing</documentation>
+            <pattern>17</pattern>
+            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+        </Thrust_20Bearing_20Length>
+        <Thrust_20Bearing_20Diameter>
+            <value>0.8009</value>
+            <default_value>1.05</default_value>
+            <documentation>Diameter of the Thrust Bearing</documentation>
+            <pattern>17</pattern>
+            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+        </Thrust_20Bearing_20Diameter>
+        <Thrust_20Bearing_20Distance_20from_20End>
+            <value>0.2</value>
+            <default_value>0.2</default_value>
+            <documentation>Distance from the end side of the shaft</documentation>
+            <pattern>17</pattern>
+            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+        </Thrust_20Bearing_20Distance_20from_20End>
     </Bearings>
     <Engine>
         <MCR>
-            <value>7000</value>
+            <value>5000</value>
             <default_value>15000.0</default_value>
             <documentation>Maximum continuous rating (kW)</documentation>
             <pattern>4</pattern>
@@ -118,7 +188,7 @@
             <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
         </Half_20length>
         <Partitions>
-            <value>400</value>
+            <value>1000</value>
             <default_value>10</default_value>
             <documentation>Number of partitions</documentation>
             <pattern>2</pattern>
@@ -213,12 +283,33 @@
             <pattern_description>[Integer range 1...2147483647 (inclusive)]</pattern_description>
         </Number_20of_20refinement_20cycles>
         <Tolerance>
-            <value>1e-14</value>
+            <value>1e-8</value>
             <default_value>0.000000001</default_value>
             <documentation>Tolerance of the solver</documentation>
             <pattern>12</pattern>
             <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
         </Tolerance>
+        <NewtonTol>
+            <value>1e-02</value>
+            <default_value>0.00001</default_value>
+            <documentation>Tolerance of the Newton Method</documentation>
+            <pattern>12</pattern>
+            <pattern_description>[Double 0...MAX_DOUBLE (inclusive)]</pattern_description>
+        </NewtonTol>
+        <NewtonMaxIter>
+            <value>10</value>
+            <default_value>100</default_value>
+            <documentation>Maximum number of iterations of the Newton Method</documentation>
+            <pattern>14</pattern>
+            <pattern_description>[Integer range 1...2147483647 (inclusive)]</pattern_description>
+        </NewtonMaxIter>
+        <HHTa>
+            <value>-0.2</value>
+            <default_value>0</default_value>
+            <documentation>HHT method alpha</documentation>
+            <pattern>12</pattern>
+            <pattern_description>[Double MIN_DOUBLE...MAX_DOUBLE (inclusive)]</pattern_description>
+        </HHTa>
         <Eigenmodes>
             <value>no</value>
             <default_value>yes</default_value>
@@ -292,7 +383,7 @@
             <pattern_description>[Double -MAX_DOUBLE...MAX_DOUBLE (inclusive)]</pattern_description>
         </End_20time>
         <Time_20step_20size>
-            <value>0.01</value>
+            <value>0.001</value>
             <default_value>0.1</default_value>
             <documentation>Time step size</documentation>
             <pattern>23</pattern>
