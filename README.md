@@ -15,7 +15,7 @@ The bearing in the present code is simulated by a vertical movement of all of th
 - [X] Dynamic Simulation using Newmark's method for time integration
 - [X] Plotting results to compare against analytical solutions
 - [X] Automatic postprocessing
-- [ ] Implementing bearing with the Reynold's Equation solution
+- [Χ] Implementing bearing with the Reynold's Equation solution
 - [ ] Implementing the Flywheel
 - [ ] Calculating Eigenvalues without consuming too much RAM (Timoshenko's Beam?)  
 - [ ] Plotting Campbell diagrams
